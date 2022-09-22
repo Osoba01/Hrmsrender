@@ -62,7 +62,7 @@ namespace HRMS.API.Controllers
             return Ok(await _mediator.Send(updateEmployee));
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, HR")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _mediator.Send(new AllEmployeeQuery()));

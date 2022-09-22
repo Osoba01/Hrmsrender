@@ -2,6 +2,6 @@
 {
     public enum Role
     {
-       Admin,GeneralManager,Manager,TeamLead,Director,Intern,Staff,ContractStaff,Consultant
+       Admin,GeneralManager,Manager,TeamLead,Director,Intern,Staff,ContractStaff,Consultant,HR
     }
 }

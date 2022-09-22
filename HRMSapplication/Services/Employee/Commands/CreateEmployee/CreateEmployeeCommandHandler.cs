@@ -37,6 +37,7 @@ namespace HRMSapplication.Commands.CreateEmployee
                 string password = encrypt.GetRandomPassword(9);
                 encrypt.EncryptPasswordAsync(employee, password);
                 employee.VerificationToken = verificationlink;
+                employee.VerifiedAt=DateTime.Now;
                
                 repo.AddEntity(employee);
                 await repo.Complete();
