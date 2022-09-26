@@ -17,12 +17,16 @@ namespace HRMS.Application.Queries.AuthenticateRefreshToken
         }
         public async Task<AuthenticateRefreshTokenResponse> Handle(AuthenticateRefreshTokenQuery request, CancellationToken cancellationToken)
         {
-            var p=(await _repo.GetAll()).FirstOrDefault(x=>x.RefreshToken==request.RefreshToken) ;
+            var p=(await _repo.FindByPredicate(x => x.RefreshToken == request.RefreshToken)).FirstOrDefault() ;
             AuthenticateRefreshTokenResponse aut = new();
             if (p != null)
             {
                 aut.IsAuthenticate=true;
                 aut.AccessToken=_tokenManager.CreateAccessToken(p);
+                aut.ResfreshToken=_tokenManager.CreateRandomToken();
+                _repo.PatchUpdate(p);
+                p.RefreshToken = aut.ResfreshToken;
+                await _repo.Complete();
             }
             return aut;
         }

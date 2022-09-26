@@ -11,5 +11,6 @@ namespace HRMS.Application.AuthenticateRefreshToken
     {
         public bool IsAuthenticate { get; set; }
         public string? AccessToken { get; set; }
+        public string? ResfreshToken { get; set; }
     }
 }

@@ -63,6 +63,7 @@ namespace HRMS.API.Controllers
                 var RefreshTokenResp = await _mediator.Send(new AuthenticateRefreshTokenQuery(HttpRefreshToken));
                 if (RefreshTokenResp.IsAuthenticate)
                 {
+                    Response.Cookies.Append("RefreshToken", RefreshTokenResp.ResfreshToken!, new CookieOptions { HttpOnly = true });
                     return Ok(RefreshTokenResp.AccessToken);
                 }
                 else
