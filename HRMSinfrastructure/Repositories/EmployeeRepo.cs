@@ -22,7 +22,6 @@ namespace HRMSinfrastructure.Repositories.CommandRepo
             return await context.Set<Employee>()
                 .Include(x=>x.Manager).
                 Include(x=>x.Department)
-                 .Include(x => x.EmployeeProjects)
                 .Include(x => x.companyProjects)
                 .Include(x => x.workExperiences)
                 .FirstOrDefaultAsync(x => x.Id == id);
