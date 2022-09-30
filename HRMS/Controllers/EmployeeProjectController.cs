@@ -29,7 +29,7 @@ namespace HRMS.API.Controllers
         {
             return Ok(await _mediator.Send(PersonalProject));
         }
-        [HttpGet]
+        [HttpGet("byemployeeid")]
         public async Task<IActionResult> PersonalProject(Guid employeeId)
         {
             return Ok(await _mediator.Send(new EmployeeProjectQuery(employeeId)));

@@ -33,7 +33,6 @@ namespace HRMSinfrastructure.Repositories.CommandRepo
                 .Where(x => x.Manager.Id == ManagerId)
                 .Include(x => x.Manager)
                 .Include(x => x.Department)
-                .Include(x=>x.EmployeeProjects)
                 .Include(x=>x.companyProjects)
                 .Include(x=>x.workExperiences)
                 .ToListAsync();
