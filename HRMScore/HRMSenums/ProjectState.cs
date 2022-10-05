@@ -8,4 +8,12 @@
     {
         PortHarcourt,Lagos,Benin,Warri
     }
+    public enum MaritalInfo
+    {
+        Married, Single
+    }
+    public enum SkillType
+    {
+        Technical, Soft
+    }
 }

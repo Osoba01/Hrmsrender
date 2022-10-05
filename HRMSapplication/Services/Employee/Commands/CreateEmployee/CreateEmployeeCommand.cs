@@ -5,6 +5,6 @@ using MediatR;
 
 namespace HRMSapplication.Commands.CreateEmployee
 {
-    public record CreateEmployeeCommand(string Email, Role Role) :IRequest<CreateEmployeeResponse>;
+    public record CreateEmployeeCommand(string Email, Role Role, Guid DepartmentId) :IRequest<CreateEmployeeResponse>;
     
 }

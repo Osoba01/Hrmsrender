@@ -25,6 +25,7 @@ namespace HRMSinfrastructure.Data
         public DbSet<WorkExperience> WorkExperiences { get; set; }
         public DbSet<CompanyProject> CompanyProjects { get; set; }
         public DbSet<EmployeeProject> EmployeeProjects { get; set; }
+        public DbSet<Skill> Skill { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());

@@ -7,6 +7,7 @@ namespace HRMScore.IRepositories.ICommandRepo.IBase
     {
         void RemoveEntity(T entity);
         T AddEntity(T entity);
+        void AddRange (IEnumerable<T> entities);    
         Task<int> Complete();
         Task<T?> FindAsync(Guid id);
         Task<IEnumerable<T>> GetToN(int n);

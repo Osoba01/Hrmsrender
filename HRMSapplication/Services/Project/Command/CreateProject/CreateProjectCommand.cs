@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HRMS.Application.Services.Project.Command.CreateProject
 {
-    public record CreateProjectCommand(Guid TeamLeadId,string Name, List<Guid> teamMemberIds):IRequest;
+    public record CreateProjectCommand(Guid ProjectManagerId,string Name, List<Guid> teamMemberIds):IRequest;
 
 
     public record CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand>
@@ -29,10 +29,10 @@ namespace HRMS.Application.Services.Project.Command.CreateProject
         public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
             var proj = _map.CreateCommandToEntity(request);
-            var teamLead= await _empRepo.FindAsync(request.TeamLeadId);
+            var teamLead= await _empRepo.FindAsync(request.ProjectManagerId);
             if (teamLead is not null)
             {
-                proj.TeamLead = teamLead;
+                proj.Manager = teamLead;
                 proj.Team.Add(teamLead);
                 foreach (var memberId in request.teamMemberIds)
                 {
@@ -47,7 +47,7 @@ namespace HRMS.Application.Services.Project.Command.CreateProject
                 return Unit.Value;
             }
             else
-                throw new NullReferenceException("Team lead not found.");
+                throw new NullReferenceException("Manager not found.");
         }
     }
 }

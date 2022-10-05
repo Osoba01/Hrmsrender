@@ -43,6 +43,7 @@ namespace HRMSinfrastructure.Dependency
             services.AddScoped<IApplyLeaveRepo, ApplyLeaveRepo>();
             services.AddScoped<IWorkExperienceRepo, WorkExperienceRepo>();
             services.AddScoped<IProjectRepo, ProjectRepo>();
+            services.AddScoped<ISkillRepo,SkillRepo>();
             services.AddScoped<IEmployeeProjectRepo, EmployerProjectRepo>();
       
             return services;

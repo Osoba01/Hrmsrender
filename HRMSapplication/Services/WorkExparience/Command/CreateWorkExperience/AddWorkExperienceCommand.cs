@@ -13,7 +13,8 @@ namespace HRMS.Application.Services.WorkExparience.Command.CreateWorkExperience
 {
     public record AddWorkExperienceCommand(
          string body ,string JobRole , string Department,
-   DateTime StartDate , DateTime EndDate , Guid employeeId
+          DateTime StartDate , DateTime EndDate , Guid employeeId,
+          string Location
         ):IRequest;
 
     public record AddWorkExperienceCommandHandler : IRequestHandler<AddWorkExperienceCommand>
@@ -40,7 +41,7 @@ namespace HRMS.Application.Services.WorkExparience.Command.CreateWorkExperience
                 return Unit.Value;
             }
             else
-                throw new ArgumentException("User not found.");
+                throw new ArgumentNullException("User not found.");
         }
     }
 }

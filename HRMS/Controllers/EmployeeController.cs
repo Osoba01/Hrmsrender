@@ -4,6 +4,7 @@ using HRMS.Application.Services.Employee.Commands.AddSkill;
 using HRMS.Application.Services.Employee.Commands.CreateEmployee;
 using HRMS.Application.Services.Employee.Common;
 using HRMS.Application.Services.Employee.Query.GetSkill;
+using HRMS.Application.Services.Employee.Query.HrInfo;
 using HRMSapplication.Commands.CreateEmployee;
 using HRMSapplication.Commands.RemoveEmployee;
 using HRMSapplication.Commands.UpdateEmployee;
@@ -37,7 +38,8 @@ namespace HRMS.API.Controllers
             _emailService = emailService;
         }
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeCommand employee)
         {
             _createEmployeeEvent.EmployeeCreated += _emailService.OnCreateEmployee;
@@ -67,6 +69,13 @@ namespace HRMS.API.Controllers
         {
             return Ok(await _mediator.Send(new AllEmployeeQuery()));
         }
+
+        [HttpGet("hrInfo")]
+        [Authorize(Roles = "HR")]
+        public async Task<IActionResult> GetHrInfo()
+        {
+            return Ok(await _mediator.Send(new HrInfoCommand()));
+        }
         [HttpGet("byManager")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetByManager(Guid managerId)
@@ -84,7 +93,7 @@ namespace HRMS.API.Controllers
             return Ok(await _mediator.Send(new SkillQuery(EmployeeId)));
         }
         [HttpPatch("addSkill")]
-        public async Task<IActionResult> AddSkill(AddSkillCommand skills)
+        public async Task<IActionResult> AddSkill(AddSkillsCommand skills)
         {
             return Ok(await _mediator.Send(skills));
         }

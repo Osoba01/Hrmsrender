@@ -20,6 +20,7 @@ namespace HRMSapplication.Response
                 return GetAge(DOB);
             }
         }
+        public MaritalInfo MaritalInfo { get; set; }
         public DateTime? DateEmployed { get; set; }
         public string? Nationality { get; set; }
         public DateTime? LastDatePromoted { get; set; }
@@ -49,7 +50,7 @@ namespace HRMSapplication.Response
         public ContractType? ContractType { get; set; }
         public bool ConfirmedStatus { get; set; }
         public bool RecievedOfferLetter { get; set; }
-        public List<WorkExperience> workExperiences { get; set; }
-        public List<CompanyProject> companyProjects { get; set; }
+        public List<WorkExperience> WorkExperiences { get; set; }
+        public List<CompanyProject> CompanyProjects { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HRMS.Infrastructure.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,19 +48,19 @@ namespace HRMS.Infrastructure.Migrations
                         column: x => x.LeaveId,
                         principalTable: "Leave",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CompanyProjectEmployee",
                 columns: table => new
                 {
-                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    companyProjectsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CompanyProjectsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompanyProjectEmployee", x => new { x.TeamId, x.companyProjectsId });
+                    table.PrimaryKey("PK_CompanyProjectEmployee", x => new { x.CompanyProjectsId, x.TeamId });
                 });
 
             migrationBuilder.CreateTable(
@@ -69,7 +69,7 @@ namespace HRMS.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TeamLeadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProjectStatus = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifyDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -106,12 +106,11 @@ namespace HRMS.Infrastructure.Migrations
                     ContactAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: true),
+                    MaritalInfo = table.Column<int>(type: "int", nullable: false),
                     StateOfOrigin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TechnicalSkill = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SoftSkill = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DOB = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateEmployed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEmployed = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Nationality = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     StaffId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -205,6 +204,29 @@ namespace HRMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Skill",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SkillName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SkillType = table.Column<int>(type: "int", nullable: false),
+                    Proficiency = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifyDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skill", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Skill_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkExperiences",
                 columns: table => new
                 {
@@ -212,10 +234,10 @@ namespace HRMS.Infrastructure.Migrations
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JobRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TestingMigration = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifyDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -241,14 +263,14 @@ namespace HRMS.Infrastructure.Migrations
                 column: "LeaveId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyProjectEmployee_companyProjectsId",
+                name: "IX_CompanyProjectEmployee_TeamId",
                 table: "CompanyProjectEmployee",
-                column: "companyProjectsId");
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyProjects_TeamLeadId",
+                name: "IX_CompanyProjects_ManagerId",
                 table: "CompanyProjects",
-                column: "TeamLeadId");
+                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Department_HODId",
@@ -276,6 +298,11 @@ namespace HRMS.Infrastructure.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Skill_EmployeeId",
+                table: "Skill",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WorkExperiences_EmployeeId",
                 table: "WorkExperiences",
                 column: "EmployeeId");
@@ -289,12 +316,12 @@ namespace HRMS.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CompanyProjectEmployee_CompanyProjects_companyProjectsId",
+                name: "FK_CompanyProjectEmployee_CompanyProjects_CompanyProjectsId",
                 table: "CompanyProjectEmployee",
-                column: "companyProjectsId",
+                column: "CompanyProjectsId",
                 principalTable: "CompanyProjects",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_CompanyProjectEmployee_Employee_TeamId",
@@ -302,12 +329,12 @@ namespace HRMS.Infrastructure.Migrations
                 column: "TeamId",
                 principalTable: "Employee",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CompanyProjects_Employee_TeamLeadId",
+                name: "FK_CompanyProjects_Employee_ManagerId",
                 table: "CompanyProjects",
-                column: "TeamLeadId",
+                column: "ManagerId",
                 principalTable: "Employee",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.NoAction);
@@ -337,6 +364,9 @@ namespace HRMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Performances");
+
+            migrationBuilder.DropTable(
+                name: "Skill");
 
             migrationBuilder.DropTable(
                 name: "WorkExperiences");

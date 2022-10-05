@@ -13,9 +13,10 @@ namespace HRMS.Domain.Entities
         public string Body { get; set; }
         public string JobRole { get; set; }
         public string Department { get; set; }
+        public string Location { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Employee Employee { get; set; }
-        public string TestingMigration { get; set; }
+      
     }
 }

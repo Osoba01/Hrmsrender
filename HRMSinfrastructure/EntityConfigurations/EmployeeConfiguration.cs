@@ -13,8 +13,8 @@ namespace HRMS.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.HasMany(e => e.companyProjects).WithMany(p => p.Team);
-            builder.HasMany(e => e.ProjectsTeamLead).WithOne(p => p.TeamLead);
+            builder.HasMany(e => e.CompanyProjects).WithMany(p => p.Team);
+            builder.HasMany(e => e.ProjectManager).WithOne(p => p.Manager);
             builder.Property(x => x.FirstName)
                 .HasMaxLength(50);
             builder.Property(x => x.Surname)

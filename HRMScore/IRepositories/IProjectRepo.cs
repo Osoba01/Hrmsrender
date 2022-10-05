@@ -5,5 +5,6 @@ namespace HRMS.Domain.IRepositories
 {
     public interface IProjectRepo:IBaseRepo<CompanyProject>
     {
+        Task<List<CompanyProject>> ProjectsByManager(Guid managerId);
     }
 }

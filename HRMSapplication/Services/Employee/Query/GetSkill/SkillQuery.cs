@@ -1,36 +1,26 @@
 ﻿using HRMS.Application.Utilities;
-using HRMScore.IRepositories;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
+
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace HRMS.Application.Services.Employee.Query.GetSkill
 {
-    public record SkillQuery(Guid employeeId):IRequest<SkillResponse>;
+    public record SkillQuery(Guid employeeId):IRequest<List<Skill>>;
 
-    public record SkillQueryHandler : IRequestHandler<SkillQuery, SkillResponse>
+    public record SkillQueryHandler : IRequestHandler<SkillQuery, List<Skill>>
     {
-        private readonly IEmployeeRepo _repo;
+        private readonly ISkillRepo _repo;
 
-        public SkillQueryHandler(IEmployeeRepo repo)
+        public SkillQueryHandler(ISkillRepo repo)
         {
             _repo = repo;
         }
-        public async Task<SkillResponse> Handle(SkillQuery request, CancellationToken cancellationToken)
+        public async Task<List<Skill>> Handle(SkillQuery request, CancellationToken cancellationToken)
         {
-            var emp = await _repo.FindAsync(request.employeeId);
-            if (emp != null)
-            {
-                SkillResponse skill = new();
-                skill.SoftSkill = emp.SoftSkill.JsonToList();
-                skill.Technical = emp.TechnicalSkill.JsonToList();
-                return skill;
-            }
-            else
-                throw new ArgumentException("Employee not found.");
+            
+            return (await _repo.FindByPredicate(x=>x.Employee.Id==request.employeeId)).ToList();
         }
     }
 }

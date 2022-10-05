@@ -13,7 +13,7 @@ namespace HRMSapplication.Commands.UpdateEmployee
         string NextOfKingAddress, DateTime LastDatePromoted,
         ContractType ContractType, WorkType WorkType, Gender Gender,
         JobRole JobRole,JobLocation JobLocation,
-        NextOfKingRelationship Relationship
+        NextOfKingRelationship Relationship, MaritalInfo MaritalInfo
         )
         : IRequest<EmployeeResponse>
     {

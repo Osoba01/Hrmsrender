@@ -17,22 +17,22 @@ namespace HRMS.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("CompanyProjectEmployee", b =>
                 {
+                    b.Property<Guid>("CompanyProjectsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("companyProjectsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasKey("CompanyProjectsId", "TeamId");
 
-                    b.HasKey("TeamId", "companyProjectsId");
-
-                    b.HasIndex("companyProjectsId");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("CompanyProjectEmployee");
                 });
@@ -49,6 +49,9 @@ namespace HRMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifyDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("ManagerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -56,12 +59,9 @@ namespace HRMS.Infrastructure.Migrations
                     b.Property<int>("ProjectStatus")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TeamLeadId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamLeadId");
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("CompanyProjects");
                 });
@@ -100,6 +100,38 @@ namespace HRMS.Infrastructure.Migrations
                     b.ToTable("EmployeeProjects");
                 });
 
+            modelBuilder.Entity("HRMS.Domain.Entities.Skill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastModifyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Proficiency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SkillName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SkillType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Skill");
+                });
+
             modelBuilder.Entity("HRMS.Domain.Entities.WorkExperience", b =>
                 {
                     b.Property<Guid>("Id")
@@ -130,12 +162,12 @@ namespace HRMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifyDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TestingMigration")
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -234,10 +266,10 @@ namespace HRMS.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DOB")
+                    b.Property<DateTime>("DOB")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEmployed")
+                    b.Property<DateTime>("DateEmployed")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("DepartmentId")
@@ -271,6 +303,9 @@ namespace HRMS.Infrastructure.Migrations
 
                     b.Property<Guid?>("ManagerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaritalInfo")
+                        .HasColumnType("int");
 
                     b.Property<int>("NTry")
                         .HasColumnType("int");
@@ -329,9 +364,6 @@ namespace HRMS.Infrastructure.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<string>("SoftSkill")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("StaffId")
                         .HasColumnType("nvarchar(max)");
 
@@ -341,9 +373,6 @@ namespace HRMS.Infrastructure.Migrations
                     b.Property<string>("Surname")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("TechnicalSkill")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VerificationToken")
                         .HasColumnType("nvarchar(max)");
@@ -420,28 +449,28 @@ namespace HRMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CompanyProjectEmployee", b =>
                 {
-                    b.HasOne("HRMScore.Entities.Employee", null)
+                    b.HasOne("HRMS.Domain.Entities.CompanyProject", null)
                         .WithMany()
-                        .HasForeignKey("TeamId")
+                        .HasForeignKey("CompanyProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HRMS.Domain.Entities.CompanyProject", null)
+                    b.HasOne("HRMScore.Entities.Employee", null)
                         .WithMany()
-                        .HasForeignKey("companyProjectsId")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("HRMS.Domain.Entities.CompanyProject", b =>
                 {
-                    b.HasOne("HRMScore.Entities.Employee", "TeamLead")
-                        .WithMany("ProjectsTeamLead")
-                        .HasForeignKey("TeamLeadId")
+                    b.HasOne("HRMScore.Entities.Employee", "Manager")
+                        .WithMany("ProjectManager")
+                        .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TeamLead");
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("HRMS.Domain.Entities.EmployeeProject", b =>
@@ -455,10 +484,21 @@ namespace HRMS.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("HRMS.Domain.Entities.Skill", b =>
+                {
+                    b.HasOne("HRMScore.Entities.Employee", "Employee")
+                        .WithMany("Skills")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("HRMS.Domain.Entities.WorkExperience", b =>
                 {
                     b.HasOne("HRMScore.Entities.Employee", "Employee")
-                        .WithMany("workExperiences")
+                        .WithMany("WorkExperiences")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -529,11 +569,13 @@ namespace HRMS.Infrastructure.Migrations
                 {
                     b.Navigation("EmployeeProjects");
 
-                    b.Navigation("ProjectsTeamLead");
+                    b.Navigation("ProjectManager");
+
+                    b.Navigation("Skills");
+
+                    b.Navigation("WorkExperiences");
 
                     b.Navigation("applyLeaves");
-
-                    b.Navigation("workExperiences");
                 });
 
             modelBuilder.Entity("HRMScore.Entities.Leave", b =>

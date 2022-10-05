@@ -18,7 +18,7 @@ namespace HRMS.Domain.Entities
         public string Name { get; set; }
       
         public List<Employee> Team { get; set; }
-        public Employee TeamLead { get; set; }
+        public Employee Manager { get; set; }
         public ProjectState ProjectStatus { get; set; }
     }
 }

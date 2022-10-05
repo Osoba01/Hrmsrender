@@ -26,7 +26,7 @@ namespace HRMSapplication.Queries.Login
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             LoginResponse logResp = new();
-            var emp=(await _repo.FindByPredicate(x => x.Email.ToLower()==request.Email.ToLower())).FirstOrDefault();
+            var emp=(await _repo.FindByPredicate(x => x.Email==request.Email.ToLower())).FirstOrDefault();
             if (emp!=null)
             {
 

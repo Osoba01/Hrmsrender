@@ -30,8 +30,8 @@ namespace HRMSapplication.Commands.UpdateEmployee
                     empy.Manager = (await _repo.FindByPredicate(x => x.Id == request.ManagerId)).FirstOrDefault();
 
                 if (request.DepartmentId != null)
-                    empy.Department = await _dprepo.FindAsync(request.Id); 
-               
+                    empy.Department = await _dprepo.FindAsync(request.DepartmentId.Value);
+                
                 await _repo.Complete();
                 return _map.EntityToResponse(empy);
             }
@@ -51,6 +51,7 @@ namespace HRMSapplication.Commands.UpdateEmployee
             employee.OtherName = request.OtherName;
             employee.Gender = request.Gender;
             employee.PhoneNo= request.PhoneNo;
+            employee.MaritalInfo = request.MaritalInfo;
             employee.StateOfOrigin= request.StateOfOrigin;
             employee.LastModifyDate = DateTime.Now;
 

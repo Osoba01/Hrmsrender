@@ -1,5 +1,6 @@
 ﻿using HRMS.Application.Services.Project.Command.CreateProject;
 using HRMS.Application.Services.Project.Command.UpdateProjet;
+using HRMS.Application.Services.Project.Query.GetAllProject;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,11 @@ namespace HRMS.API.Controllers
         public async Task<IActionResult> CompanyProject([FromBody] UpdatePropjetCommand Project)
         {
             return Ok(await _mediator.Send(Project));
+        }
+        [HttpGet("byManager")]
+        public async Task<IActionResult> CompanyProjectByManager(Guid id)
+        {
+            return Ok(await _mediator.Send(new ProjectMyManagerQuery(id)));
         }
     }
 }

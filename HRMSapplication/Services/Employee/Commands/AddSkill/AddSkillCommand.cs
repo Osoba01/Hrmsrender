@@ -1,4 +1,7 @@
 ﻿using HRMS.Application.Utilities;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
+using HRMScore.HRMSenums;
 using HRMScore.IRepositories;
 using MediatR;
 using System;
@@ -9,44 +12,61 @@ using System.Threading.Tasks;
 
 namespace HRMS.Application.Services.Employee.Commands.AddSkill
 {
-    public record AddSkillCommand(Guid employId, List<string> SoftSkill, List<string> TechnicalSkill):IRequest;
-
-    public record AddSkillCommandHandler : IRequestHandler<AddSkillCommand>
+    public class SkillCommand
     {
-        private readonly IEmployeeRepo _repo;
 
-        public AddSkillCommandHandler(IEmployeeRepo repo)
+        public string SkillName { get; set; }
+        public int Proficiency { get; set; }
+        public SkillType SkillType { get; set; }
+    }
+    public record AddSkillsCommand(Guid EmployeeId, List<SkillCommand> Skills):IRequest<int>;
+
+    public record AddSkillCommandHandler : IRequestHandler<AddSkillsCommand,int>
+    {
+        private readonly ISkillRepo _repo;
+        private readonly IEmployeeRepo _employeeRepo;
+
+        public AddSkillCommandHandler(ISkillRepo repo, IEmployeeRepo employeeRepo)
         {
             _repo = repo;
+            
+            _employeeRepo = employeeRepo;
         }
-        public async Task<Unit> Handle(AddSkillCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddSkillsCommand request, CancellationToken cancellationToken)
         {
-            var emp=await _repo.FindAsync(request.employId);
-            if (emp != null)
+            var employee= await _employeeRepo.FindAsync(request.EmployeeId);
+            if (employee is not null)
             {
-                _repo.PatchUpdate(emp);
-                if (request.SoftSkill.Count > 0)
-                {
-                    emp.SoftSkill = AddToJsonString(request.SoftSkill, emp.SoftSkill);
-                }
-                if (request.TechnicalSkill.Count > 0)
-                { 
-                    emp.TechnicalSkill = AddToJsonString(request.TechnicalSkill, emp.TechnicalSkill);
-                }
-                await _repo.Complete();
-                return Unit.Value;
-            } else
-                throw new ArgumentException("employee not found.");
-        }
-        private string? AddToJsonString(List<string> skillList, string? skillString)
-        {
-            List<string> Skills = new();
-            if (skillString != null)
-            {
-                Skills = skillString.JsonToList();
+                _repo.AddRange(await MapSkills(employee, request.Skills));
+                return await _repo.Complete();
             }
-            Skills.AddRange(skillList);
-            return Skills.ListToJason();
+            else
+                throw new ArgumentNullException("employee not found.");
+            
+        }
+        
+        private async Task<List<Skill>> MapSkills(HRMScore.Entities.Employee employee, List<SkillCommand> skillCommands)
+        {
+            List<Skill> skills = new();
+            foreach (SkillCommand skCd in skillCommands)
+            {
+                if (skCd.SkillName is not null)
+                {
+                var _skill = await _repo.FindByPredicate(x => x.SkillName.ToLower() == skCd.SkillName
+                && x.Employee == employee);
+                    if (!_skill.Any())
+                    {
+                        skills.Add(new Skill()
+                        {
+                            SkillName = skCd.SkillName,
+                            SkillType = skCd.SkillType,
+                            Proficiency=skCd.Proficiency,
+                            Employee = employee,
+                        });
+                    }
+                }
+            }
+            return skills;
         }
     }
 }

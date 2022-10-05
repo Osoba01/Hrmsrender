@@ -11,9 +11,10 @@ namespace HRMScore.Entities
         {
             applyLeaves = new();
             EmployeeProjects=new();
-            workExperiences=new();
-            companyProjects=new();
-            ProjectsTeamLead=new();
+            WorkExperiences=new();
+            CompanyProjects=new();
+            ProjectManager=new();
+            Skills=new();
         }
         public string? FirstName { get; set; }
         public string? Surname { get; set; }
@@ -21,16 +22,17 @@ namespace HRMScore.Entities
         public string? ContactAddress { get; set; }
         public string Email { get; set; }
         public Gender? Gender { get; set; }
+        public MaritalInfo MaritalInfo { get; set; }
         public string? StateOfOrigin { get; set; }
         public string? PhoneNo { get; set; }
-        public string? TechnicalSkill { get; set; }
-        public string? SoftSkill { get; set; }
-        public DateTime? DOB { get; set; }
-        public DateTime? DateEmployed { get; set; }
+        public DateTime DOB { get; set; }
+        public DateTime DateEmployed { get; set; }
         public string? Nationality { get; set; }
         public byte[]? Photo { get; set; }
         public string? StaffId { get; set; }
         public List<EmployeeProject> EmployeeProjects { get; set; }
+        public List<Skill> Skills { get; set; }
+
 
         //Next of King Details
         public string? NextOfKingFirstName { get; set; }
@@ -56,9 +58,9 @@ namespace HRMScore.Entities
         public JobLocation? JobLocation { get; set; }
         public Department? Department { get; set; }
         public List<ApplyLeave> applyLeaves { get; set; }
-        public List<WorkExperience> workExperiences { get; set; }
-        public List<CompanyProject> companyProjects { get; set; }
-        public List<CompanyProject> ProjectsTeamLead { get; set; }
+        public List<WorkExperience> WorkExperiences { get; set; }
+        public List<CompanyProject> CompanyProjects { get; set; }
+        public List<CompanyProject> ProjectManager { get; set; }
         public WorkType? WorkType { get; set; }
         public ContractType? ContractType { get; set; }
         public bool ConfirmedStatus { get; set; }

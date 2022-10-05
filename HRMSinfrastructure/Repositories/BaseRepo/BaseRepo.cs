@@ -64,6 +64,9 @@ namespace HRMSinfrastructure.Repositories.CommandRepo.BaseRepo
             return context.Set<T>().Where(x => x.Id == id).Any();
         }
 
-
+        public void AddRange(IEnumerable<T> entities)
+        {
+            context.Set<T>().AddRange(entities);
+        }
     }
 }
