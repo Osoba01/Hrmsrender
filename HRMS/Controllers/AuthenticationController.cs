@@ -34,8 +34,8 @@ namespace HRMS.API.Controllers
             var loginResponse = await _mediator.Send(login);
             if (loginResponse.IsAuthenticated)
             {
-                Response.Cookies.Append("RefreshToken", loginResponse.NewRefreshToken!, new CookieOptions { HttpOnly = true });
-                return Ok(loginResponse.AccessToken);
+                Response.Cookies.Append("RefreshToken", loginResponse.TokenModel.RefreshToken!, new CookieOptions { HttpOnly = true });
+                return Ok(loginResponse.TokenModel.AccessToken);
             }
             else
                 return BadRequest(loginResponse.FailMessage);
@@ -61,9 +61,9 @@ namespace HRMS.API.Controllers
             if (HttpRefreshToken != null)
             {
                 var RefreshTokenResp = await _mediator.Send(new AuthenticateRefreshTokenQuery(HttpRefreshToken));
-                if (RefreshTokenResp.IsAuthenticate)
+                if (RefreshTokenResp.AccessToken is not null)
                 {
-                    Response.Cookies.Append("RefreshToken", RefreshTokenResp.ResfreshToken!, new CookieOptions { HttpOnly = true });
+                    Response.Cookies.Append("RefreshToken", RefreshTokenResp.RefreshToken!, new CookieOptions { HttpOnly = true });
                     return Ok(RefreshTokenResp.AccessToken);
                 }
                 else

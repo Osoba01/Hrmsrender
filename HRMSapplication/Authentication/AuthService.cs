@@ -1,5 +1,6 @@
-﻿using HRMS.Application.ISecurityService;
+﻿
 using HRMScore.Entities;
+using HRMScore.IRepositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -13,21 +14,20 @@ using System.Text;
 
 namespace HRMS.Auth
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
-        public HttpContextAccessor _httpContext { get; }
         private readonly IConfiguration _config;
+        private readonly IEmployeeRepo _employeeRepo;
 
-        public AuthService(HttpContextAccessor httpContext,IConfiguration config)
+        public AuthService( IConfiguration config, IEmployeeRepo employee)
         {
-            _httpContext = httpContext;
             _config = config;
+            _employeeRepo = employee;
         }
-        public TokenModel GetToken(Employee employee)
+        public async Task<TokenModel> GetToken(Employee employee)
         {
             var key = Encoding.ASCII.GetBytes(_config["AppSetting:Token"]);
             var tokenHandler = new JwtSecurityTokenHandler();
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(
@@ -39,20 +39,24 @@ namespace HRMS.Auth
                         }
                     ),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
-                Expires = DateTime.UtcNow.AddMinutes(5)
+                Expires = DateTime.UtcNow.AddMinutes(20)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-           
+            string refreshToken = $"{GenerateRefreshToken()}{employee.Id}";
+            _employeeRepo.PatchUpdate(employee);
+            employee.RefreshToken = refreshToken;
+            employee.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
+            await _employeeRepo.Complete();
+
             return new TokenModel
             {
                 AccessToken = tokenHandler.WriteToken(token),
-                RefreshToken = GenerateRefreshToken(),
-                RefreshTokenExpire=DateTime.UtcNow
+                RefreshToken = refreshToken,
             };
         }
         static string GenerateRefreshToken()
         {
-            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)); 
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
         public void EncryptPassword(string password, Employee employee)
@@ -73,6 +77,18 @@ namespace HRMS.Auth
                 byte[] computed = hmc.ComputeHash(Encoding.ASCII.GetBytes(password));
                 return computed.SequenceEqual(employee.PasswordHash);
             }
+        }
+
+        public string GetRandomPassword(int length)
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new();
+            Random rnd = new();
+            while (0 < length--)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+            }
+            return res.ToString();
         }
     }
 }

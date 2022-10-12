@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using HRMS.Application.Commands.CreateEmployee;
-using HRMS.Application.ISecurityService;
 using HRMS.Application.Services.Employee.Commands.CreateEmployee;
+using HRMS.Auth;
 using HRMSapplication.Response;
 using HRMScore.Entities;
 using HRMScore.IRepositories;
 using MediatR;
+using System.Security.Cryptography;
 
 namespace HRMSapplication.Commands.CreateEmployee
 {
@@ -13,16 +14,14 @@ namespace HRMSapplication.Commands.CreateEmployee
     {
         private readonly IEmployeeRepo repo;
         private readonly IMapper map;
-        private readonly ITokenManager _token;
-        private readonly IEncryption encrypt;
+        private readonly IAuthService _authService;
         private readonly IDepartmentRepo _departmentRepo;
 
-        public CreateEmployeeCommandHandler(IEmployeeRepo repo, IMapper map, ITokenManager token,IEncryption encrypt, IDepartmentRepo departmentRepo)
+        public CreateEmployeeCommandHandler(IEmployeeRepo repo, IMapper map, IAuthService authService, IDepartmentRepo departmentRepo)
         {
             this.repo = repo;
             this.map = map;
-            _token = token;
-            this.encrypt = encrypt;
+            _authService = authService;
             _departmentRepo = departmentRepo;
         }
 
@@ -36,9 +35,9 @@ namespace HRMSapplication.Commands.CreateEmployee
             {
 
                 var employee = map.Map<Employee>(request);
-                string verificationlink = _token.CreateRandomToken();
-                string password = encrypt.GetRandomPassword(9);
-                encrypt.EncryptPasswordAsync(employee, password);
+                string verificationlink = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+                string password = _authService.GetRandomPassword(9);
+                _authService.EncryptPassword(password, employee);
                 employee.VerificationToken = verificationlink;
                 employee.VerifiedAt = DateTime.Now;
                 employee.Email = request.Email.ToLower();

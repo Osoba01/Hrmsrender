@@ -1,4 +1,5 @@
-﻿using HRMSapplication.Response;
+﻿using HRMS.Auth;
+using HRMSapplication.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,11 @@ namespace HRMSapplication.Login
     {
         public LoginResponse()
         {
-           
-            EmployeeResponse = new EmployeeResponse();
+            TokenModel = new();
         }
         public bool IsAuthenticated { get; set; }
         public bool Isverify { get; set; }
-        public string? AccessToken { get; set; }
-        public string? NewRefreshToken { get; set; }
-        public EmployeeResponse EmployeeResponse { get; set; }
+        public TokenModel TokenModel { get; set; }
         public string FailMessage { get; set; }
     }
 }

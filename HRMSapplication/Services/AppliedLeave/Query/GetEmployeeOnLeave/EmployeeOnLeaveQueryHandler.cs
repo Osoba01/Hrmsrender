@@ -18,8 +18,7 @@ namespace HRMSapplication.Queries.GetEmployeeOnLeave
         }
         public async Task<IEnumerable<ApplyLeaveResponse>> Handle(EmployeeOnLeaveQuery request, CancellationToken cancellationToken)
         {
-            return _map.EntityToResponse(await _repo.ApplyLeaveByPredicate((x => x.StartDate.Date <= DateTime.Today &&
-            x.StartDate.AddDays(x.Leave.Days) >= DateTime.Today)));
+            return _map.EntityToResponse(await _repo.OnGoingLeave());
         }
     }
 }

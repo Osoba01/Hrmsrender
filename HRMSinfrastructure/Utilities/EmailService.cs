@@ -22,7 +22,7 @@ namespace HRMS.Infrastructure.Utilities
         {
             SendEmailDTO emailObj = new();
             emailObj.To = e.Employee.Email;
-            emailObj.Subject = "Account verification Link From Cypher Screscent HR";
+            emailObj.Subject = "Account verification Link From CypherCrescent HR";
             emailObj.Body = e.Employee.VerificationToken;
              SendEmail(emailObj);
         }
@@ -30,7 +30,7 @@ namespace HRMS.Infrastructure.Utilities
         {
             SendEmailDTO emailObj = new SendEmailDTO();
             emailObj.To = e.Employee.Email;
-            emailObj.Subject = "Password Reset Link From Cypher Screscent HR";
+            emailObj.Subject = "Password Reset Link From CypherCrescent HR";
             emailObj.Body = e.Employee.ResetToken;
             SendEmail(emailObj);
         }

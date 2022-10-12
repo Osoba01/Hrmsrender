@@ -1,32 +1,31 @@
-﻿using HRMS.Application.ISecurityService;
+﻿
 using HRMS.Application.AuthenticateRefreshToken;
 using MediatR;
 using HRMScore.IRepositories;
+using HRMS.Auth;
 
 namespace HRMS.Application.Queries.AuthenticateRefreshToken
 {
-    public record AuthenticateRefreshTokenQueryHandler : IRequestHandler<AuthenticateRefreshTokenQuery, AuthenticateRefreshTokenResponse>
+    public record AuthenticateRefreshTokenQueryHandler : IRequestHandler<AuthenticateRefreshTokenQuery, TokenModel>
     {
         private readonly IEmployeeRepo _repo;
-        private readonly ITokenManager _tokenManager;
+        private readonly IAuthService _authService;
 
-        public AuthenticateRefreshTokenQueryHandler(IEmployeeRepo repo, ITokenManager tokenManager)
+        public AuthenticateRefreshTokenQueryHandler(IEmployeeRepo repo, IAuthService authService)
         {
             _repo = repo;
-            _tokenManager = tokenManager;
+            _authService = authService;
+
         }
-        public async Task<AuthenticateRefreshTokenResponse> Handle(AuthenticateRefreshTokenQuery request, CancellationToken cancellationToken)
+        public async Task<TokenModel> Handle(AuthenticateRefreshTokenQuery request, CancellationToken cancellationToken)
         {
-            var p=(await _repo.FindByPredicate(x => x.RefreshToken == request.RefreshToken)).FirstOrDefault() ;
-            AuthenticateRefreshTokenResponse aut = new();
+            var p = (await _repo.FindByPredicate(x => x.RefreshToken == request.RefreshToken)).FirstOrDefault() ;
+           
+            TokenModel aut = new();
+            
             if (p != null)
             {
-                aut.IsAuthenticate=true;
-                aut.AccessToken=_tokenManager.CreateAccessToken(p);
-                aut.ResfreshToken=_tokenManager.CreateRandomToken();
-                _repo.PatchUpdate(p);
-                p.RefreshToken = aut.ResfreshToken;
-                await _repo.Complete();
+               await _authService.GetToken(p);
             }
             return aut;
         }

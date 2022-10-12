@@ -5,8 +5,7 @@ using System.Reflection;
 using static HRMS.API.Utilities.Constant.ConfigurationConst;
 using MediatR;
 using static HRMS.Auth.AuthConfiguration;
-using HRMS.Application.ISecurityService;
-using HRMS.Infrastructure.SecurityServices;
+
 using Microsoft.OpenApi.Models;
 using Serilog;
 using HRMS.API.ExceptionHandling;
@@ -75,7 +74,6 @@ builder.Services.AddTransient<IFileManager, FileManager>();
 builder.Services.AuthenticationSetup(builder.Configuration);
 
 var key = builder.Configuration.GetSection(AppSettingToken).Value;
-builder.Services.AddTransient<ITokenManager>(x => new TokenManager(key));
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors(option =>

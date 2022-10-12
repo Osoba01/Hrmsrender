@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using HRMS.Application.ISecurityService;
 using HRMS.Application.Services.EmployeeService.Common;
+using HRMS.Auth;
 using HRMSapplication.Login;
 using HRMSapplication.Response;
 using HRMScore.IRepositories;
@@ -11,17 +11,12 @@ namespace HRMSapplication.Queries.Login
     public record LoginHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
         private readonly IEmployeeRepo _repo;
-        private readonly IMapEmployee _map;
-        private readonly ITokenManager _token;
-        private readonly IEncryption ecrypt;
-
-        public LoginHandler(IEmployeeRepo repo, IMapEmployee map,ITokenManager token, IEncryption ecrypt)
+        private readonly IAuthService _authService;
+        public LoginHandler(IEmployeeRepo repo, IAuthService authService)
         {
 
             _repo = repo;
-            _map = map;
-            _token = token;
-            this.ecrypt = ecrypt;
+            _authService = authService;
         }
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
@@ -32,17 +27,12 @@ namespace HRMSapplication.Queries.Login
 
                 if (emp.VerifiedAt != null)
                 {
-                    var isAuth = ecrypt.VerifyPasswordAsync(request.Password, emp.PasswordHash, emp.PasswordSalt);
+                    var isAuth = _authService.VerifyPassword(request.Password, emp);
                     if (isAuth)
                     {
                         logResp.IsAuthenticated = true;
                         logResp.Isverify = true;
-                        logResp.AccessToken = _token.CreateAccessToken(emp);
-                        logResp.NewRefreshToken = _token.CreateRandomToken();
-                        logResp.EmployeeResponse = _map.EntityToResponse(emp);
-                        _repo.PatchUpdate(emp);
-                        emp.RefreshToken = logResp.NewRefreshToken;
-                        await _repo.Complete();
+                        logResp.TokenModel= await _authService.GetToken(emp);
                     }
                     else
                         logResp.FailMessage = "Email or Password is Invalid.";

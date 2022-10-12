@@ -22,23 +22,24 @@ namespace HRMSapplication.ProfileMapping
         public HRMSMProfile()
         {
             CreateMap<Employee, EmployeeResponse>().
-                ForMember(d => d.DepartmentName, opt => opt.MapFrom(src => src.Department!=null? src.Department.Name:"No Department"))
-               .ForMember(d => d.Manager, opt => opt.MapFrom(src => src.Manager == null ? "Not assign" : src.Manager.EmployeeName()));
+                ForMember(d => d.DepartmentName, opt => opt.MapFrom(src => src.Department!=null? src.Department.Name:null))
+               .ForMember(d => d.Manager, opt => opt.MapFrom(src => src.Manager == null ? null : src.Manager.EmployeeName()));
 
                 
             CreateMap<CreateEmployeeCommand, Employee>();
             CreateMap<UpdateEmployeeCommand, Employee>();
                
 
-            CreateMap<ApplyLeave, ApplyLeaveResponse>().
-                ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src =>src.Employee.EmployeeName()))
+            CreateMap<ApplyLeave, ApplyLeaveResponse>()
+                .ForMember(dest=>dest.EndDate, opt=>opt.MapFrom(src=>src.StartDate.AddDays(src.Leave.Days)))
+                .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src =>src.Employee.EmployeeName()))
                 .ForMember(dest => dest.StaffId, opt => opt.MapFrom(src => src.Employee.StaffId));
             CreateMap<ApplyForLeaveCommand, ApplyLeave>();
 
             
             CreateMap<Department, DepartmentResponse>()
                 .ForMember(dest => dest.CountEmployee, opt => opt.MapFrom(src => src.Employees.Count()))
-                .ForMember(dest => dest.HOD, opt => opt.MapFrom(src => src.HOD == null?"No HOD": src.HOD.EmployeeName()));
+                .ForMember(dest => dest.HOD, opt => opt.MapFrom(src => src.HOD == null?null: src.HOD.EmployeeName()));
             CreateMap<CreateDepartmentCommand,Department>();
 
             CreateMap<Leave, LeaveResponse>();

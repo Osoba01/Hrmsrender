@@ -22,8 +22,6 @@ namespace HRMSinfrastructure.Repositories.CommandRepo
             return await context.Set<Employee>()
                 .Include(x=>x.Manager).
                 Include(x=>x.Department)
-                .Include(x => x.CompanyProjects)
-                .Include(x => x.WorkExperiences)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -33,8 +31,6 @@ namespace HRMSinfrastructure.Repositories.CommandRepo
                 .Where(x => x.Manager.Id == ManagerId)
                 .Include(x => x.Manager)
                 .Include(x => x.Department)
-                .Include(x=>x.CompanyProjects)
-                .Include(x=>x.WorkExperiences)
                 .ToListAsync();
         }
     }

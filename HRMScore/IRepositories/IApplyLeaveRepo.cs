@@ -7,6 +7,7 @@ namespace HRMScore.IRepositories
     public interface IApplyLeaveRepo: IBaseRepo<ApplyLeave>
     {
         Task<IEnumerable<ApplyLeave>> ApplyLeaveByPredicate(Expression<Func<ApplyLeave, bool>> predicate);
+        Task<IEnumerable<ApplyLeave>> OnGoingLeave();
     }
     
 

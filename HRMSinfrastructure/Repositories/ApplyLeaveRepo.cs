@@ -23,5 +23,15 @@ namespace HRMSinfrastructure.Repositories.CommandRepo
                 .Include(x=>x.Employee)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ApplyLeave>> OnGoingLeave()
+        {
+            return await context.ApplyLeave.
+                Where((x => x.StartDate.Date <= DateTime.Today &&
+            x.StartDate.AddDays(x.Leave.Days) >= DateTime.Today))
+                .Include(x=>x.Employee)
+                .Include(x=>x.Leave)
+                .ToListAsync();
+        }
     }
 }

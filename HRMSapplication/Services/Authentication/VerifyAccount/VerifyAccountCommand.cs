@@ -1,4 +1,4 @@
-﻿using HRMS.Application.ISecurityService;
+﻿using HRMS.Auth;
 using HRMScore.IRepositories;
 using MediatR;
 
@@ -9,12 +9,12 @@ namespace HRMS.Application.Services.Security.VerifyAccount
     public record VerifyAccountCommandHandle : IRequestHandler<VerifyAccountCommand, bool>
     {
         private readonly IEmployeeRepo _repo;
-        private readonly IEncryption _ecrypt;
+        private readonly IAuthService _authService;
 
-        public VerifyAccountCommandHandle(IEmployeeRepo repo, IEncryption ecrypt)
+        public VerifyAccountCommandHandle(IEmployeeRepo repo, IAuthService authService)
         {
             _repo = repo;
-            _ecrypt = ecrypt;
+            _authService = authService;
         }
         public async Task<bool> Handle(VerifyAccountCommand request, CancellationToken cancellationToken)
         {
@@ -24,7 +24,7 @@ namespace HRMS.Application.Services.Security.VerifyAccount
             if (emp == null || emp.ResetTokenExpires < DateTime.UtcNow)
                 return false;
             _repo.PatchUpdate(emp);
-            _ecrypt.EncryptPasswordAsync(emp, request.Password);
+            _authService.EncryptPassword(request.Password,emp);
             emp.VerifiedAt = DateTime.UtcNow;
             return await _repo.Complete()>0;
             

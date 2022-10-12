@@ -1,4 +1,5 @@
-﻿using HRMS.Application.ISecurityService;
+﻿
+using HRMS.Auth;
 using HRMScore.IRepositories;
 using MediatR;
 using System;
@@ -13,12 +14,12 @@ namespace HRMS.Application.Services.Employee.Commands.RecoverPassword
     public record RecoverPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, bool>
     {
         private readonly IEmployeeRepo _repo;
-        private readonly IEncryption _encryption;
+        private readonly IAuthService _authService;
 
-        public RecoverPasswordCommandHandler(IEmployeeRepo repo, IEncryption encryption)
+        public RecoverPasswordCommandHandler(IEmployeeRepo repo, IAuthService authService)
         {
             _repo = repo;
-            _encryption = encryption;
+            _authService = authService;
         }
         public async Task<bool> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
@@ -28,7 +29,7 @@ namespace HRMS.Application.Services.Employee.Commands.RecoverPassword
             if (emp==null || emp.ResetTokenExpires<DateTime.UtcNow)
                 return false;
             _repo.PatchUpdate(emp);
-            _encryption.EncryptPasswordAsync(emp, request.newPassword);
+            _authService.EncryptPassword(request.newPassword,emp);
             await _repo.Complete();
             return true;
         }
