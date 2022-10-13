@@ -26,7 +26,6 @@ namespace HRMSinfrastructure.Dependency
            
             services.AddTransient<ISendEmailEvent, CreateEmployeeCommandHandler>();
             services.AddTransient<IResetPasswordEvent,ForgotPasswordCommandHandler>();
-            services.AddScoped<IAuthService, AuthService>();
             services.AddTransient<IEmailService, EmailService>();
 
             services.AddTransient<IMapApplyLeave, MapApplyLeave>();

@@ -19,7 +19,7 @@ namespace HRMS.Application.Services.WorkExparience.Query.GetWorkExperienceByEmpl
         }
         public async Task<IEnumerable<ExperienceResponse>> Handle(WorkExperienceByEmployeeQuery request, CancellationToken cancellationToken)
         {
-            return _map.EntityToResponse(await _repo.FindByPredicate(x => x.Id == request.EmployeeId));
+            return _map.EntityToResponse(await _repo.FindByPredicate(x => x.Employee.Id == request.EmployeeId));
         }
     }
 }
