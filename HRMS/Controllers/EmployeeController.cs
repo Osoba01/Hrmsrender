@@ -2,6 +2,10 @@
 using HRMS.Application.Queries.GetEmployeeById;
 using HRMS.Application.Services.Employee.Commands.AddSkill;
 using HRMS.Application.Services.Employee.Commands.CreateEmployee;
+using HRMS.Application.Services.Employee.Commands.UpdateBio;
+using HRMS.Application.Services.Employee.Commands.UpdateEmployeeDepartment;
+using HRMS.Application.Services.Employee.Commands.UpdateJobDetails;
+using HRMS.Application.Services.Employee.Commands.UpdateManager;
 using HRMS.Application.Services.Employee.Common;
 using HRMS.Application.Services.Employee.Query.GetSkill;
 using HRMS.Application.Services.Employee.Query.HrInfo;
@@ -38,7 +42,7 @@ namespace HRMS.API.Controllers
             _emailService = emailService;
         }
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeCommand employee)
         {
@@ -62,6 +66,44 @@ namespace HRMS.API.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateEmployeeCommand updateEmployee)
         {
             return Ok(await _mediator.Send(updateEmployee));
+        }
+        [HttpPatch("update-bio")]
+        public async Task<IActionResult> UpdateBio([FromBody] UpdateBioCommand bio)
+        {
+            var _response=await _mediator.Send(bio);
+            if (_response.IsSuccess)
+                return Ok();
+            else
+                return BadRequest(_response.Message);
+        }
+
+        [HttpPatch("update-Job-details")]
+        public async Task<IActionResult> UpdateJobDetails([FromBody] UpdateJobDetailCommand jobDetail)
+        {
+            var _response = await _mediator.Send(jobDetail);
+            if (_response.IsSuccess)
+                return Ok();
+            else
+                return BadRequest(_response.Message);
+        }
+        
+        [HttpPatch("update-employee-department")]
+        public async Task<IActionResult> UpdateJobDetails([FromBody] UpdateEmployeeDepartmentCommand updateEmployeeDepartmentCommand)
+        {
+            var _response = await _mediator.Send(updateEmployeeDepartmentCommand);
+            if (_response.IsSuccess)
+                return Ok();
+            else
+                return BadRequest(_response.Message);
+        }
+        [HttpPatch("update-manager")]
+        public async Task<IActionResult> UpdateManger([FromBody] UpdateMangerCommand updateMangerCommand)
+        {
+            var _response = await _mediator.Send(updateMangerCommand);
+            if (_response.IsSuccess)
+                return Ok();
+            else
+                return BadRequest(_response.Message);
         }
         [HttpGet]
         [Authorize(Roles = "Admin, HR")]
