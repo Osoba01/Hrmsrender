@@ -7,6 +7,7 @@ using HRMS.Application.Services.Employee.Commands.UpdateEmployeeDepartment;
 using HRMS.Application.Services.Employee.Commands.UpdateJobDetails;
 using HRMS.Application.Services.Employee.Commands.UpdateManager;
 using HRMS.Application.Services.Employee.Common;
+using HRMS.Application.Services.Employee.Query.GetEmployeeByRole;
 using HRMS.Application.Services.Employee.Query.GetSkill;
 using HRMS.Application.Services.Employee.Query.HrInfo;
 using HRMSapplication.Commands.CreateEmployee;
@@ -16,6 +17,7 @@ using HRMSapplication.Commands.UpdateEmployeeDepartment;
 using HRMSapplication.Commands.UploadEmpoyeePhoto;
 using HRMSapplication.Queries.GetAllEmployees;
 using HRMSapplication.Queries.GetEmployeeByDepartment;
+using HRMScore.HRMSenums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -111,7 +113,11 @@ namespace HRMS.API.Controllers
         {
             return Ok(await _mediator.Send(new AllEmployeeQuery()));
         }
-
+        [HttpGet("by-role")]
+        public async Task<IActionResult> GetByRole(Role role)
+        {
+            return Ok(await _mediator.Send(new EmployeeByRoleQuery(role)));
+        }
         [HttpGet("hrInfo")]
         [Authorize(Roles = "HR")]
         public async Task<IActionResult> GetHrInfo()
