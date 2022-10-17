@@ -37,7 +37,13 @@ namespace HRMS.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put([FromBody] UpdateDepartmentCommand department)
         {
-            return Ok(await _mediator.Send(department));
+            var resp = await _mediator.Send(department);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
     }
 }

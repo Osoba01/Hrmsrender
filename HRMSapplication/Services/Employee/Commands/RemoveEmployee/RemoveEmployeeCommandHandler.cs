@@ -1,9 +1,10 @@
-﻿using HRMScore.IRepositories;
+﻿using HRMS.Application.Services.Common;
+using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.RemoveEmployee
 {
-    public record RemoveEmployeeCommandHandler : IRequestHandler<RemoveEmployeeCommand>
+    public record RemoveEmployeeCommandHandler : IRequestHandler<RemoveEmployeeCommand, BaseCommandResponse>
     {
         private readonly IEmployeeRepo repo;
 
@@ -11,18 +12,19 @@ namespace HRMSapplication.Commands.RemoveEmployee
         {
             this.repo = repo;
         }
-        public async Task<Unit> Handle(RemoveEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(RemoveEmployeeCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var emp= await repo.FindAsync(request.Id);
             if (emp != null)
             {
                 repo.RemoveEntity(emp);
                 await repo.Complete();
-                return Unit.Value;
+                response.IsSuccess = true;
             }
             else
-                throw new ArgumentException("Employee not found.");
-            
+                response.Message="Employee not found.";
+            return response;
         }
     }
 }

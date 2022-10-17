@@ -1,4 +1,5 @@
-﻿using HRMS.Domain.IRepositories;
+﻿using HRMS.Application.Services.Common;
+using HRMS.Domain.IRepositories;
 using HRMScore.HRMSenums;
 using HRMScore.IRepositories;
 using MediatR;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace HRMS.Application.Services.EmployeeProject.Command.CreateEmployeeProject
 {
-    public record CreateEmployeeProjectCommand(Guid EmployeeId,string Name, string? Link ,ProjectState Status, string description):IRequest;
+    public record CreateEmployeeProjectCommand(Guid EmployeeId,string Name, string? Link ,ProjectState Status, string description):IRequest<BaseCommandResponse>;
 
-    public record CreateEmployeeProjectCommandHandler : IRequestHandler<CreateEmployeeProjectCommand>
+    public record CreateEmployeeProjectCommandHandler : IRequestHandler<CreateEmployeeProjectCommand, BaseCommandResponse>
     {
         private readonly IEmployeeProjectRepo _repo;
         private readonly IEmployeeRepo _empRepo;
@@ -22,8 +23,9 @@ namespace HRMS.Application.Services.EmployeeProject.Command.CreateEmployeeProjec
             _repo = repo;
             _empRepo = empRepo;
         }
-        public async Task<Unit> Handle(CreateEmployeeProjectCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(CreateEmployeeProjectCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var emp = await _empRepo.FindAsync(request.EmployeeId);
             if (emp is not null)
             {
@@ -35,10 +37,11 @@ namespace HRMS.Application.Services.EmployeeProject.Command.CreateEmployeeProjec
                 employeeProject.Description = request.description;
                 _repo.AddEntity(employeeProject);
                 await _repo.Complete();
-                return Unit.Value;
+                response.IsSuccess = true;
             }
             else
-                throw new NullReferenceException("Employee not found.");
+                response.Message="Employee not found.";
+            return response;
         }
     }
 }

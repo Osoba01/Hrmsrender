@@ -22,12 +22,24 @@ namespace HRMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> PersonalProject([FromBody] CreateEmployeeProjectCommand PersonalProject)
         {
-            return Ok(await _mediator.Send(PersonalProject));   
+            var resp = await _mediator.Send(PersonalProject);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);   
         }
         [HttpPut]
         public async Task<IActionResult> PersonalProject([FromBody] UpdateEmployeeProjectCommand PersonalProject)
         {
-            return Ok(await _mediator.Send(PersonalProject));
+            var resp = await _mediator.Send(PersonalProject);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
         [HttpGet("byemployeeid")]
         public async Task<IActionResult> PersonalProject(Guid employeeId)

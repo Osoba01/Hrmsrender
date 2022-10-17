@@ -26,7 +26,7 @@ namespace HRMS.Application.Queries.GetEmployeeById
                 return _map.EntityToResponse(emp);
             }
             else
-                throw new ArgumentException("record with the given Id is not found");
+                return new EmployeeResponse();
             
         }
     }

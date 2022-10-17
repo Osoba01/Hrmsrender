@@ -1,10 +1,11 @@
-﻿using HRMScore.Entities;
+﻿using HRMS.Application.Services.Common;
+using HRMScore.Entities;
 using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.RejectOrCancleLeave
 {
-    public record RejectOrConcleLeaveCommandHandler : IRequestHandler<RejectOrConcleLeaveCommand>
+    public record RejectOrConcleLeaveCommandHandler : IRequestHandler<RejectOrConcleLeaveCommand, BaseCommandResponse>
     {
         private readonly IApplyLeaveRepo repo;
 
@@ -12,18 +13,20 @@ namespace HRMSapplication.Commands.RejectOrCancleLeave
         {
             this.repo = repo;
         }
-        public async Task<Unit> Handle(RejectOrConcleLeaveCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(RejectOrConcleLeaveCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var appliedLeave = await repo.FindAsync(request.ApplyLeaveId);
             if (appliedLeave != null)
             {
                 repo.PatchUpdate(appliedLeave);
                 RejectLeaveObj(appliedLeave, request);
                 await repo.Complete();
-                return Unit.Value;
+                response.IsSuccess=true;
             }
             else
-                throw new ArgumentException("Record not found.");
+                response.Message="Record not found.";
+            return response;
             
         }
         private void RejectLeaveObj(ApplyLeave appliedLeave, RejectOrConcleLeaveCommand command)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HRMS.Application.Services.Common;
 using HRMS.Application.Services.ProjectService.Common;
 using HRMS.Domain.IRepositories;
 using HRMScore.IRepositories;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace HRMS.Application.Services.Project.Command.CreateProject
 {
-    public record CreateProjectCommand(Guid ProjectManagerId,string Name, List<Guid> teamMemberIds):IRequest;
+    public record CreateProjectCommand(Guid ProjectManagerId,string Name, List<Guid> teamMemberIds):IRequest<BaseCommandResponse>;
 
 
-    public record CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand>
+    public record CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, BaseCommandResponse>
     {
         private readonly IProjectRepo _repo;
         private readonly IMapProject _map;
@@ -26,8 +27,9 @@ namespace HRMS.Application.Services.Project.Command.CreateProject
             _map = map;
             _empRepo = empRepo;
         }
-        public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var proj = _map.CreateCommandToEntity(request);
             var teamLead= await _empRepo.FindAsync(request.ProjectManagerId);
             if (teamLead is not null)
@@ -44,10 +46,11 @@ namespace HRMS.Application.Services.Project.Command.CreateProject
                 }
                 _repo.AddEntity(proj);
                 await _repo.Complete();
-                return Unit.Value;
+                response.IsSuccess = true;
             }
             else
-                throw new NullReferenceException("Manager not found.");
+                response.Message="Manager not found.";
+            return response;
         }
     }
 }

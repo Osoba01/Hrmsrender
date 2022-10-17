@@ -1,10 +1,11 @@
-﻿using HRMScore.IRepositories;
+﻿using HRMS.Application.Services.Common;
+using HRMScore.IRepositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace HRMSapplication.Commands.UploadEmpoyeePhoto
 {
-    public record UploadEmployeePhotoCommandHandler : IRequestHandler<UploadEmployeePhotoCommand>
+    public record UploadEmployeePhotoCommandHandler : IRequestHandler<UploadEmployeePhotoCommand, BaseCommandResponse>
     {
         private readonly IEmployeeRepo repo;
 
@@ -12,18 +13,21 @@ namespace HRMSapplication.Commands.UploadEmpoyeePhoto
         {
             this.repo = repo;
         }
-        public async Task<Unit> Handle(UploadEmployeePhotoCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(UploadEmployeePhotoCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var emp= await repo.FindAsync(request.EmployeeId);
             if (emp is not null)
             {
                 repo.PatchUpdate(emp);
                 emp.Photo = await ImageToByteArray(request.Photo);
                 await repo.Complete();
-                return Unit.Value;
+                response.IsSuccess = true;
             }
             else
-                throw new ArgumentException("Record not found.");
+                response.Message = "Employee not found.";
+            return response;
+            
         }
 
         private async Task<byte[]> ImageToByteArray(IFormFile file)

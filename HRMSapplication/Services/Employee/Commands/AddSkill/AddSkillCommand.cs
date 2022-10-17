@@ -1,4 +1,5 @@
-﻿using HRMS.Application.Utilities;
+﻿using HRMS.Application.Services.Common;
+using HRMS.Application.Utilities;
 using HRMS.Domain.Entities;
 using HRMS.Domain.IRepositories;
 using HRMScore.HRMSenums;
@@ -19,9 +20,9 @@ namespace HRMS.Application.Services.Employee.Commands.AddSkill
         public int Proficiency { get; set; }
         public SkillType SkillType { get; set; }
     }
-    public record AddSkillsCommand(Guid EmployeeId, List<SkillCommand> Skills):IRequest<int>;
+    public record AddSkillsCommand(Guid EmployeeId, List<SkillCommand> Skills):IRequest<BaseCommandResponse>;
 
-    public record AddSkillCommandHandler : IRequestHandler<AddSkillsCommand,int>
+    public record AddSkillCommandHandler : IRequestHandler<AddSkillsCommand, BaseCommandResponse>
     {
         private readonly ISkillRepo _repo;
         private readonly IEmployeeRepo _employeeRepo;
@@ -32,17 +33,19 @@ namespace HRMS.Application.Services.Employee.Commands.AddSkill
             
             _employeeRepo = employeeRepo;
         }
-        public async Task<int> Handle(AddSkillsCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(AddSkillsCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var employee= await _employeeRepo.FindAsync(request.EmployeeId);
             if (employee is not null)
             {
                 _repo.AddRange(await MapSkills(employee, request.Skills));
-                return await _repo.Complete();
+                 await _repo.Complete();
+                response.IsSuccess = true;
             }
             else
-                throw new ArgumentNullException("employee not found.");
-            
+                response.Message="employee not found.";
+            return response;
         }
         
         private async Task<List<Skill>> MapSkills(HRMScore.Entities.Employee employee, List<SkillCommand> skillCommands)

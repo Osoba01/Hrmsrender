@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HRMS.Application.Services.Common;
 using HRMS.Application.Services.WorkExparienceService.Common;
 using HRMS.Domain.IRepositories;
 using HRMScore.IRepositories;
@@ -15,9 +16,9 @@ namespace HRMS.Application.Services.WorkExparience.Command.CreateWorkExperience
          string body ,string JobRole , string Department,
           DateTime StartDate , DateTime EndDate , Guid employeeId,
           string Location
-        ):IRequest;
+        ):IRequest<BaseCommandResponse>;
 
-    public record AddWorkExperienceCommandHandler : IRequestHandler<AddWorkExperienceCommand>
+    public record AddWorkExperienceCommandHandler : IRequestHandler<AddWorkExperienceCommand, BaseCommandResponse>
     {
         private readonly IWorkExperienceRepo _repo;
         private readonly IMapWorkExperience _map;
@@ -29,8 +30,9 @@ namespace HRMS.Application.Services.WorkExparience.Command.CreateWorkExperience
             _map = map;
             _empRep = empRep;
         }
-        public async Task<Unit> Handle(AddWorkExperienceCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(AddWorkExperienceCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var emp= (await _empRep.FindByPredicate(x=>x.Id==request.employeeId)).FirstOrDefault();
             if (emp is not null)
             {
@@ -38,10 +40,10 @@ namespace HRMS.Application.Services.WorkExparience.Command.CreateWorkExperience
                 p.Employee = emp;
                 _repo.AddEntity(p);
                 await _repo.Complete();
-                return Unit.Value;
+                response.IsSuccess = true;
             }
             else
-                throw new ArgumentNullException("User not found.");
+                response.Message = "User not found." ;
         }
     }
 }

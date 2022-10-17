@@ -10,6 +10,7 @@ using HRMS.Application.Services.Employee.Common;
 using HRMS.Application.Services.Employee.Query.GetEmployeeByRole;
 using HRMS.Application.Services.Employee.Query.GetSkill;
 using HRMS.Application.Services.Employee.Query.HrInfo;
+using HRMS.Domain.Entities;
 using HRMSapplication.Commands.CreateEmployee;
 using HRMSapplication.Commands.RemoveEmployee;
 using HRMSapplication.Commands.UpdateEmployee;
@@ -61,7 +62,13 @@ namespace HRMS.API.Controllers
         [HttpPatch("updateRole")]
         public async Task<IActionResult> UpdateRole([FromBody] UpdateEmployeeRoleCommand updateEmployeeRole)
         {
-            return Ok(await _mediator.Send(updateEmployeeRole));
+            var resp= await _mediator.Send(updateEmployeeRole);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }else
+                return BadRequest(resp.Message);
+            
         }
 
         [HttpPatch]
@@ -143,13 +150,21 @@ namespace HRMS.API.Controllers
         [HttpPatch("addSkill")]
         public async Task<IActionResult> AddSkill(AddSkillsCommand skills)
         {
-            return Ok(await _mediator.Send(skills));
+            var _response = await _mediator.Send(skills);
+            if (_response.IsSuccess)
+                return Ok();
+            else
+                return BadRequest(_response.Message);
         }
 
         [HttpPost("uploadPhoto")]
         public async Task<IActionResult> UploadPhoto(IFormFile file,Guid EmployeeId)
         {
-            return Ok(await _mediator.Send (new UploadEmployeePhotoCommand(file, EmployeeId)));
+            var _response = await _mediator.Send(new UploadEmployeePhotoCommand(file, EmployeeId));
+            if (_response.IsSuccess)
+                return Ok();
+            else
+                return BadRequest(_response.Message);
         }
 
         [HttpPost("uploadCertificate")]

@@ -22,7 +22,13 @@ namespace HRMS.API.Controllers
         [Authorize(Roles = "Admin , Manager")]
         public async Task<IActionResult> CompanyProject([FromBody] CreateProjectCommand Project)
         {
-            return Ok(await _mediator.Send(Project));
+            var resp = await _mediator.Send(Project);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
         [HttpPut]
         public async Task<IActionResult> CompanyProject([FromBody] UpdatePropjetCommand Project)

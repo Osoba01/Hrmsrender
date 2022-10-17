@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using HRMS.Application.Services.Common;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace HRMSapplication.Commands.RemoveEmployee
 {
-    public record RemoveEmployeeCommand(Guid Id):IRequest;
+    public record RemoveEmployeeCommand(Guid Id):IRequest<BaseCommandResponse>;
 }

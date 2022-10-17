@@ -8,7 +8,7 @@ using HRMSapplication.Queries.GetAllLeave;
 using HRMSapplication.Queries.GetEmployeeOnLeave;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRMS.API.Controllers
@@ -39,7 +39,13 @@ namespace HRMS.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody]UpdateLeaveCommand leave)
         {
-            return Ok(await _mediator.Send(leave));
+            var resp = await _mediator.Send(leave);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
 
         [HttpPost("apply")]
@@ -52,13 +58,25 @@ namespace HRMS.API.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Approve([FromBody] ApproveLeaveCommand approve)
         {
-            return Ok(await _mediator.Send(approve));   
+            var resp = await _mediator.Send(approve);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
         
         [HttpPatch("cancle")]
         public async Task<IActionResult> Cancle(RejectOrConcleLeaveCommand cancle)
         {
-            return Ok(await _mediator.Send(cancle));
+            var resp = await _mediator.Send(cancle);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
 
         [HttpGet("onGoingLeave")]

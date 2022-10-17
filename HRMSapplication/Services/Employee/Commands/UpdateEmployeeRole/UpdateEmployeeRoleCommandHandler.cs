@@ -1,9 +1,10 @@
-﻿using HRMScore.IRepositories;
+﻿using HRMS.Application.Services.Common;
+using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.UpdateEmployeeDepartment
 {
-    public record UpdateEmployeeRoleCommandHandler : IRequestHandler<UpdateEmployeeRoleCommand>
+    public record UpdateEmployeeRoleCommandHandler : IRequestHandler<UpdateEmployeeRoleCommand, BaseCommandResponse>
     {
         private readonly IEmployeeRepo repo;
 
@@ -11,18 +12,20 @@ namespace HRMSapplication.Commands.UpdateEmployeeDepartment
         {
             this.repo = repo;
         }
-        public async Task<Unit> Handle(UpdateEmployeeRoleCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(UpdateEmployeeRoleCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var emp= await repo.FindAsync(request.EmployeeId);
             if (emp is not null)
             {
                 repo.PatchUpdate(emp);
                 emp.Role=request.Role;
                 await repo.Complete();
-                return Unit.Value;
+                response.IsSuccess=true;
             }
             else
-                throw new ArgumentException("Employee not found.");
+                response.Message="Employee not found.";
+            return response;
         }
     }
 }

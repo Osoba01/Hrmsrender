@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HRMS.Application.Services.Common;
 using HRMS.Application.Services.LeaveService.Common;
 using HRMSapplication.Response;
 using HRMScore.Entities;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace HRMSapplication.Commands.UpdateLeave
 {
-    public record UpdateLeaveCommandHandler : IRequestHandler<UpdateLeaveCommand, LeaveResponse>
+    public record UpdateLeaveCommandHandler : IRequestHandler<UpdateLeaveCommand, BaseCommandResponse>
     {
         private readonly ILeaveRepo _repo;
         private readonly IMapLeave _map;
@@ -17,18 +18,20 @@ namespace HRMSapplication.Commands.UpdateLeave
             _repo = repo;
             _map = map;
         }
-        public async Task<LeaveResponse> Handle(UpdateLeaveCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(UpdateLeaveCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse response = new();
             var leave = await _repo.FindAsync(request.Id);
             if (leave is not null)
             {
                 UpdateCreateLeave(request, leave);
                 _repo.Update(leave);
                 await _repo.Complete();
-                return _map.EntityToResponse(leave);
+                response.IsSuccess=true;
             }
             else
-                throw new ArgumentException("Record not found");
+                response.Message="Record not found";
+            return response;
         }
         private void UpdateCreateLeave(UpdateLeaveCommand request, Leave leave)
         {

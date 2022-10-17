@@ -19,7 +19,13 @@ namespace HRMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody]AddWorkExperienceCommand WorkExperience)
         {
-            return Ok(await _mediator.Send(WorkExperience));
+            var resp = await _mediator.Send(WorkExperience);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
         [HttpGet]
         public async Task<IActionResult> Get(Guid employeeId)

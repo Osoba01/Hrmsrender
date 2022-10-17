@@ -34,7 +34,7 @@ namespace HRMSapplication.Commands.ChangePassword
                     return false;
             }
             else
-                throw new ArgumentException("User not found.");
+                return false;
             
         }
     }

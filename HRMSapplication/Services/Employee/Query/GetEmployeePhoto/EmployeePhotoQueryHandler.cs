@@ -16,7 +16,7 @@ namespace HRMSapplication.Queries.GetEmployeePhoto
             var emp = await repo.FindAsync(request.EmployeeId);
             if (emp is not null)
                 return emp.Photo;
-            throw new ArgumentException("Record not found.");
+            return null;
         }
     }
 }

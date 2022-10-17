@@ -1,26 +1,24 @@
 ﻿using AutoMapper;
-using HRMS.Application.Services.CommonDepartment;
-using HRMSapplication.Response;
+using HRMS.Application.Services.Common;
 using HRMScore.Entities;
 using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.UpdateDate
 {
-    public record UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, DepartmentResponse>
+    public record UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, BaseCommandResponse>
     {
         private readonly IDepartmentRepo _repo;
-        private readonly IMapDepartment _map;
         private readonly IEmployeeRepo _employeeRepo;
 
-        public UpdateDepartmentCommandHandler(IDepartmentRepo repo, IMapDepartment map, IEmployeeRepo employeeRepo)
+        public UpdateDepartmentCommandHandler(IDepartmentRepo repo, IEmployeeRepo employeeRepo)
         {
             _repo = repo;
-            _map = map;
             _employeeRepo = employeeRepo;
         }
-        public async Task<DepartmentResponse> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
         {
+            BaseCommandResponse resp = new();
             var dept= await _repo.FindAsync(request.Id);
             if (dept != null)
             {
@@ -30,10 +28,11 @@ namespace HRMSapplication.Commands.UpdateDate
                     dept.HOD = hod;
                 _repo.Update(dept);
                 await _repo.Complete();
-                return _map.EntityToResponse(dept);
+                resp.IsSuccess = true;
             }
             else
-                throw new ArgumentException("Record not found.");
+                resp.Message="Department not found.";
+            return resp;
         }
         public void CreateDepartment(UpdateDepartmentCommand request, Department dept)
         {
