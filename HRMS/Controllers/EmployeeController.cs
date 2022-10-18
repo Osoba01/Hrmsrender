@@ -45,7 +45,6 @@ namespace HRMS.API.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeCommand employee)
         {
             _createEmployeeEvent.EmployeeCreated += _emailService.OnCreateEmployee;
