@@ -83,7 +83,7 @@ namespace HRMS.API.Controllers
             else
                 return BadRequest(_response.Message);
         }
-
+        
         [HttpPatch("update-Job-details")]
         public async Task<IActionResult> UpdateJobDetails([FromBody] UpdateJobDetailCommand jobDetail)
         {

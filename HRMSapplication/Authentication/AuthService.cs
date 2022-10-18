@@ -39,7 +39,7 @@ namespace HRMS.Auth
                         }
                     ),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
-                Expires = DateTime.UtcNow.AddMinutes(20)
+                Expires = DateTime.UtcNow.AddMinutes(1440)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string refreshToken = $"{GenerateRefreshToken()}{employee.Id}";
