@@ -1,5 +1,4 @@
-﻿using HRMScore.Entities;
-using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 using HRMScore.HRMSenums;
 using System;
 using System.Collections.Generic;

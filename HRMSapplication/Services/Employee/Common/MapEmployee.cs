@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HRMSapplication.Commands.UpdateEmployee;
 using HRMSapplication.Response;
-using HRMScore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +17,11 @@ namespace HRMS.Application.Services.EmployeeService.Common
         {
             _map = map;
         }
-        public EmployeeResponse EntityToResponse(HRMScore.Entities.Employee entity)
+        public EmployeeResponse EntityToResponse(Domain.Entities.Employee entity)
         {
             return _map.Map<EmployeeResponse>(entity);
         }
-        public IEnumerable<EmployeeResponse> EntityToResponse(IEnumerable<HRMScore.Entities.Employee> entities)
+        public IEnumerable<EmployeeResponse> EntityToResponse(IEnumerable<Domain.Entities.Employee> entities)
         {
             return _map.Map<IEnumerable<EmployeeResponse>>(entities);
         }

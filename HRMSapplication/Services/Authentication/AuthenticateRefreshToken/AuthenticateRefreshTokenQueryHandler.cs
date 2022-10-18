@@ -1,8 +1,8 @@
 ﻿
 using HRMS.Application.AuthenticateRefreshToken;
 using MediatR;
-using HRMScore.IRepositories;
 using HRMS.Auth;
+using HRMS.Domain.IRepositories;
 
 namespace HRMS.Application.Queries.AuthenticateRefreshToken
 {

@@ -17,27 +17,28 @@ namespace HRMS.API.ExceptionHandling
             try
             {
                 await _next(context);
-            }catch (ArgumentException ex)
-            {
-                _logger.LogError($"Something went wrong: {ex}");
-                await ClintSideExceptionAsync(context, ex.Message);
             }
+            //catch (ArgumentException ex)
+            //{
+            //    _logger.LogError($"Something went wrong: {ex}");
+            //    await ClintSideExceptionAsync(context, ex.Message);
+            //}
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong. Unhandle exception: {ex}");
                 await HandleServerExceptionAsync(context, ex.Message);
             }
         }
-        private Task ClintSideExceptionAsync(HttpContext context, string errorMsg)
-        {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return context.Response.WriteAsync(new ErrorDetails
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = $"Client Side Error: {errorMsg}."
-            }.ToString());
-        }
+        //private Task ClintSideExceptionAsync(HttpContext context, string errorMsg)
+        //{
+        //    context.Response.ContentType = "application/json";
+        //    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        //    return context.Response.WriteAsync(new ErrorDetails
+        //    {
+        //        StatusCode = context.Response.StatusCode,
+        //        Message = $"Client Side Error: {errorMsg}."
+        //    }.ToString());
+        //}
         private Task HandleServerExceptionAsync(HttpContext context, string errorMsg)
         {
             context.Response.ContentType = "application/json";

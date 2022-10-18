@@ -1,6 +1,6 @@
-﻿using HRMSapplication.Commands.ApplyForLeave;
+﻿using HRMS.Domain.Entities;
+using HRMSapplication.Commands.ApplyForLeave;
 using HRMSapplication.Response;
-using HRMScore.Entities;
 
 namespace HRMS.Application.Services.AppliedLeave.CommonResponse
 {

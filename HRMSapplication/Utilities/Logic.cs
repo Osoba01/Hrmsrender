@@ -1,4 +1,4 @@
-﻿using HRMScore.Entities;
+﻿using HRMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

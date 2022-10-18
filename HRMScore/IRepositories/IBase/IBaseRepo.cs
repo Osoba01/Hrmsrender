@@ -1,13 +1,13 @@
-﻿using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 using System.Linq.Expressions;
 
-namespace HRMScore.IRepositories.ICommandRepo.IBase
+namespace HRMS.Domain.IRepositories.IBase
 {
     public interface IBaseRepo<T> where T : BaseEntity
     {
         void RemoveEntity(T entity);
         T AddEntity(T entity);
-        void AddRange (IEnumerable<T> entities);    
+        void AddRange(IEnumerable<T> entities);
         Task<int> Complete();
         Task<T?> FindAsync(Guid id);
         Task<IEnumerable<T>> GetToN(int n);

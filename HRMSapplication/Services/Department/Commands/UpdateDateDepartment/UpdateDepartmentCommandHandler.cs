@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HRMS.Application.Services.Common;
-using HRMScore.Entities;
-using HRMScore.IRepositories;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.UpdateDate

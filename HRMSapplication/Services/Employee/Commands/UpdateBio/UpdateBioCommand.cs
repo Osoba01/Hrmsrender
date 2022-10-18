@@ -1,8 +1,8 @@
 ﻿using HRMS.Application.Services.Common;
 using HRMS.Application.Services.EmployeeService.Common;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Commands.UpdateEmployee;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -45,7 +45,7 @@ namespace HRMS.Application.Services.Employee.Commands.UpdateBio
                 response.Message = "Record not found. Please contact the developer or admin.";
             return response;
         }
-        private void UpdateCreateEmployee(UpdateBioCommand request,HRMScore.Entities.Employee employee)
+        private void UpdateCreateEmployee(UpdateBioCommand request, Domain.Entities.Employee employee)
         {
             employee.Nationality = request.Nationality;
             employee.ContactAddress = request.ContactAddress;

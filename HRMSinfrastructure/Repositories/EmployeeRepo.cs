@@ -1,12 +1,12 @@
 ﻿
-using HRMScore.Entities;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
+using HRMS.Infrastructure.Repositories.BaseRepo;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using HRMSinfrastructure.Data;
-using HRMSinfrastructure.Repositories.CommandRepo.BaseRepo;
 using Microsoft.EntityFrameworkCore;
 
-namespace HRMSinfrastructure.Repositories.CommandRepo
+namespace HRMS.Infrastructure.Repositories
 {
     public class EmployeeRepo : BaseRepo<Employee>, IEmployeeRepo
     {
@@ -20,8 +20,8 @@ namespace HRMSinfrastructure.Repositories.CommandRepo
         public async Task<Employee?> EmployeeById(Guid id)
         {
             return await context.Set<Employee>()
-                .Include(x=>x.Manager).
-                Include(x=>x.Department)
+                .Include(x => x.Manager).
+                Include(x => x.Department)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

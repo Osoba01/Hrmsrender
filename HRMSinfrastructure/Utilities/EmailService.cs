@@ -24,7 +24,7 @@ namespace HRMS.Infrastructure.Utilities
             emailObj.To = e.Employee.Email;
             emailObj.Subject = "Account verification Link From CypherCrescent HR";
             emailObj.Body = e.Employee.VerificationToken;
-             SendEmail(emailObj);
+            SendEmail(emailObj);
         }
         public async void OnResetPassword(object? source, EmployeeEventArg e)
         {

@@ -1,12 +1,12 @@
-﻿using HRMScore.Entities.Base;
-using HRMScore.IRepositories.ICommandRepo.IBase;
+﻿using HRMS.Domain.Entities.Base;
+using HRMS.Domain.IRepositories.IBase;
 using HRMSinfrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 using System.Linq.Expressions;
 
 
-namespace HRMSinfrastructure.Repositories.CommandRepo.BaseRepo
+namespace HRMS.Infrastructure.Repositories.BaseRepo
 {
     public class BaseRepo<T> : IBaseRepo<T> where T : BaseEntity
     {
@@ -18,7 +18,7 @@ namespace HRMSinfrastructure.Repositories.CommandRepo.BaseRepo
         }
         public T AddEntity(T entity)
         {
-           context.Set<T>().Add(entity);
+            context.Set<T>().Add(entity);
             return entity;
         }
 
@@ -33,12 +33,12 @@ namespace HRMSinfrastructure.Repositories.CommandRepo.BaseRepo
         public void RemoveEntity(T entity)
         {
             context.Set<T>().Remove(entity);
-           
+
         }
 
         public async Task<int> Complete()
         {
-           return await context.SaveChangesAsync();
+            return await context.SaveChangesAsync();
         }
 
         public async Task<T?> FindAsync(Guid id)

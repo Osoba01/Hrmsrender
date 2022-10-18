@@ -1,20 +1,19 @@
-﻿using HRMS.Domain.Entities;
-using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 using HRMScore.HRMSenums;
 
-namespace HRMScore.Entities
+namespace HRMS.Domain.Entities
 {
-    public class Employee:BaseEntity
+    public class Employee : BaseEntity
     {
         //personal Details
         public Employee()
         {
             applyLeaves = new();
-            EmployeeProjects=new();
-            WorkExperiences=new();
-            CompanyProjects=new();
-            ProjectManager=new();
-            Skills=new();
+            EmployeeProjects = new();
+            WorkExperiences = new();
+            CompanyProjects = new();
+            ProjectManager = new();
+            Skills = new();
         }
         public string? FirstName { get; set; }
         public string? Surname { get; set; }
@@ -36,7 +35,7 @@ namespace HRMScore.Entities
 
         //Next of King Details
         public string? NextOfKingFirstName { get; set; }
-        public  string? NextOfKingSurName { get; set; }
+        public string? NextOfKingSurName { get; set; }
         public string? NextOfKingPhoneNo { get; set; }
         public string? NextOfKingAddress { get; set; }
         public string? NextOfKingEmail { get; set; }
@@ -70,6 +69,6 @@ namespace HRMScore.Entities
         public int NTry { get; set; }
 
         //Maritarn info
-    
+
     }
 }

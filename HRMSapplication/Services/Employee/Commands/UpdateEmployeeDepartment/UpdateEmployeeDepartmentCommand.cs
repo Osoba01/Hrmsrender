@@ -1,5 +1,5 @@
 ﻿using HRMS.Application.Services.Common;
-using HRMScore.IRepositories;
+using HRMS.Domain.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

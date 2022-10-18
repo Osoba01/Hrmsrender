@@ -1,7 +1,7 @@
 ﻿using HRMS.Application.Services.EmployeeService.Common;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

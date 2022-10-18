@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HRMS.Application.Services.EmployeeService.Common;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Queries.GetAllEmployees

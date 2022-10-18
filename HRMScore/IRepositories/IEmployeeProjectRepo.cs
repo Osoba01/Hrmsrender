@@ -1,5 +1,5 @@
 ﻿using HRMS.Domain.Entities;
-using HRMScore.IRepositories.ICommandRepo.IBase;
+using HRMS.Domain.IRepositories.IBase;
 
 namespace HRMS.Domain.IRepositories
 {

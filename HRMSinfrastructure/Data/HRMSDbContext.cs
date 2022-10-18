@@ -1,13 +1,7 @@
 ﻿using HRMS.Domain.Entities;
 using HRMS.Infrastructure.EntityConfigurations;
-using HRMScore.Entities;
-using HRMScore.Entities.Base;
+
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRMSinfrastructure.Data
 {

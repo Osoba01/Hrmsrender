@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HRMS.Application.Services.CommonDepartment;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Queries.GetAllDepartment

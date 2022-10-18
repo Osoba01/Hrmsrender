@@ -1,4 +1,4 @@
-﻿using HRMScore.Entities;
+﻿using HRMS.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace HRMS.Auth

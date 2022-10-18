@@ -1,12 +1,12 @@
-﻿using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 
-namespace HRMScore.Entities
+namespace HRMS.Domain.Entities
 {
-    public class Department:BaseEntity
+    public class Department : BaseEntity
     {
         public Department()
         {
-            Employees= new List<Employee>();
+            Employees = new List<Employee>();
         }
         public string Name { get; set; }
         public Employee? HOD { get; set; }

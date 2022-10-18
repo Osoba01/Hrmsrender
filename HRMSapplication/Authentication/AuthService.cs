@@ -1,6 +1,6 @@
 ﻿
-using HRMScore.Entities;
-using HRMScore.IRepositories;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

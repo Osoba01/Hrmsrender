@@ -3,7 +3,6 @@ using HRMS.Application.Utilities;
 using HRMS.Domain.Entities;
 using HRMS.Domain.IRepositories;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -48,7 +47,7 @@ namespace HRMS.Application.Services.Employee.Commands.AddSkill
             return response;
         }
         
-        private async Task<List<Skill>> MapSkills(HRMScore.Entities.Employee employee, List<SkillCommand> skillCommands)
+        private async Task<List<Skill>> MapSkills(Domain.Entities.Employee employee, List<SkillCommand> skillCommands)
         {
             List<Skill> skills = new();
             foreach (SkillCommand skCd in skillCommands)

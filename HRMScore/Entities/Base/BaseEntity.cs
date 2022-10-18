@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HRMScore.Entities.Base
+namespace HRMS.Domain.Entities.Base
 {
     public class BaseEntity
     {

@@ -1,13 +1,13 @@
-﻿using HRMScore.Entities;
-using HRMScore.IRepositories.ICommandRepo.IBase;
+﻿using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories.IBase;
 
-namespace HRMScore.IRepositories
+namespace HRMS.Domain.IRepositories
 {
-    public interface IPerformanceRepo:IBaseRepo<Performance>
+    public interface IPerformanceRepo : IBaseRepo<Performance>
     {
-       
-        
+
+
     }
     ///
-   
+
 }

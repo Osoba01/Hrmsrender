@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using HRMS.Application.Services.CommonDepartment;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
-using HRMScore.Entities;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.CreateDepartment

@@ -13,7 +13,6 @@ using HRMSapplication.Commands.CreateLeave;
 using HRMSapplication.Commands.RateEmployeePerformance;
 using HRMSapplication.Commands.UpdateEmployee;
 using HRMSapplication.Response;
-using HRMScore.Entities;
 
 namespace HRMSapplication.ProfileMapping
 {

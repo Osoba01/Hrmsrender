@@ -1,14 +1,14 @@
-﻿using HRMScore.Entities;
-using HRMScore.IRepositories.ICommandRepo.IBase;
+﻿using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories.IBase;
 using System.Linq.Expressions;
 
-namespace HRMScore.IRepositories
+namespace HRMS.Domain.IRepositories
 {
-    public interface IApplyLeaveRepo: IBaseRepo<ApplyLeave>
+    public interface IApplyLeaveRepo : IBaseRepo<ApplyLeave>
     {
         Task<IEnumerable<ApplyLeave>> ApplyLeaveByPredicate(Expression<Func<ApplyLeave, bool>> predicate);
         Task<IEnumerable<ApplyLeave>> OnGoingLeave();
     }
-    
+
 
 }

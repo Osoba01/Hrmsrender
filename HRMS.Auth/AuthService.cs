@@ -1,5 +1,5 @@
 ﻿
-using HRMScore.Entities;
+using HRMS.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

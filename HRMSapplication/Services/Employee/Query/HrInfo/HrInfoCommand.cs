@@ -1,7 +1,6 @@
 ﻿using HRMS.Application.Utilities;
-using HRMScore.Entities;
+using HRMS.Domain.IRepositories;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMS.Application.Services.Employee.Query.HrInfo
@@ -39,7 +38,7 @@ namespace HRMS.Application.Services.Employee.Query.HrInfo
             return (await _applyLeaveRepo.ApplyLeaveByPredicate(x => x.StartDate.Date <= DateTime.Today &&
             x.StartDate.AddDays(x.Leave.Days) >= DateTime.Today)).Count();
         }
-        List<DistributionByWorkLocation> GetDistributionByWorkLocation(List<HRMScore.Entities.Employee> employees)
+        List<DistributionByWorkLocation> GetDistributionByWorkLocation(List<Domain.Entities.Employee> employees)
         {
             var p = employees.Select(emp=>emp.JobLocation.ToString()).ToList();
             return p.GroupBy(x => x)
@@ -50,7 +49,7 @@ namespace HRMS.Application.Services.Employee.Query.HrInfo
                 }).ToList();
             
         }
-        List<DistributionByWorkType> GetDistributionByWorkType(List<HRMScore.Entities.Employee> employees)
+        List<DistributionByWorkType> GetDistributionByWorkType(List<Domain.Entities.Employee> employees)
         {
             var p = employees.Select(emp => emp.ContractType.ToString()).ToList();
             return p.GroupBy(x => x)
@@ -60,7 +59,7 @@ namespace HRMS.Application.Services.Employee.Query.HrInfo
                     NoEmployee = y.Count()
                 }).ToList();
         }
-        List<DistributionByDepartment> GetDistributionByDepartment(List<HRMScore.Entities.Employee> employees)
+        List<DistributionByDepartment> GetDistributionByDepartment(List<Domain.Entities.Employee> employees)
         {
             employees = employees.Where(x => x.Department!=null).ToList();
             var p = employees.Select(emp => emp.Department.Name);
@@ -71,7 +70,7 @@ namespace HRMS.Application.Services.Employee.Query.HrInfo
                     NoEmployee = y.Count()
                 }).ToList();
         }
-        List<DistributionByAge> GetDistributionByAge(List<HRMScore.Entities.Employee> employees)
+        List<DistributionByAge> GetDistributionByAge(List<Domain.Entities.Employee> employees)
         {
             var p = employees.Select(emp =>Logic.GetAge(emp.DOB)).ToList();
             List<DistributionByAge> DistributionByAge = new();
@@ -116,20 +115,20 @@ namespace HRMS.Application.Services.Employee.Query.HrInfo
 
             }
 
-            DistributionByAge.Add(new DistributionByAge(){ AgeRange = "0_20", NoEmployee = R0_20});
-            DistributionByAge.Add(new DistributionByAge() { AgeRange = "21_25", NoEmployee = R21_25 });
-            DistributionByAge.Add(new DistributionByAge() { AgeRange = "26_30", NoEmployee = R26_30 });
-            DistributionByAge.Add(new DistributionByAge() { AgeRange = "31_40", NoEmployee = R31_40 });
-            DistributionByAge.Add(new DistributionByAge() { AgeRange = "0_50", NoEmployee = R41_50 });
-            DistributionByAge.Add(new DistributionByAge() { AgeRange = "0_60", NoEmployee = R51_60 });
-            DistributionByAge.Add(new DistributionByAge() { AgeRange = "0_70", NoEmployee = R61_70 });
+            DistributionByAge.Add(new DistributionByAge(){ AgeRange = "0-20", NoEmployee = R0_20});
+            DistributionByAge.Add(new DistributionByAge() { AgeRange = "21-25", NoEmployee = R21_25 });
+            DistributionByAge.Add(new DistributionByAge() { AgeRange = "26-30", NoEmployee = R26_30 });
+            DistributionByAge.Add(new DistributionByAge() { AgeRange = "31-40", NoEmployee = R31_40 });
+            DistributionByAge.Add(new DistributionByAge() { AgeRange = "41-50", NoEmployee = R41_50 });
+            DistributionByAge.Add(new DistributionByAge() { AgeRange = "51-60", NoEmployee = R51_60 });
+            DistributionByAge.Add(new DistributionByAge() { AgeRange = "61-70", NoEmployee = R61_70 });
             DistributionByAge.Add(new DistributionByAge() { AgeRange = ">70", NoEmployee = R71Up });
 
             return DistributionByAge;
 
 
         }
-        List<DistributionByWorkRole> GetDistributionByWorkRole(List<HRMScore.Entities.Employee> employees)
+        List<DistributionByWorkRole> GetDistributionByWorkRole(List<Domain.Entities.Employee> employees)
         {
             var p = employees.Select(emp => emp.Role.ToString()).ToList();
             return p.GroupBy(x => x)

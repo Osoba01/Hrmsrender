@@ -1,8 +1,8 @@
 ﻿using HRMS.Application.Services.Common;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Commands.UpdateEmployee;
 using HRMSapplication.Response;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace HRMS.Application.Services.Employee.Commands.UpdateJobDetails
                 response.Message = "Record not found. Please contact the developer or admin.";
             return response;
         }
-        private void UpdateCreateEmployee(UpdateJobDetailCommand request, HRMScore.Entities.Employee employee)
+        private void UpdateCreateEmployee(UpdateJobDetailCommand request, Domain.Entities.Employee employee)
         {
             employee.LastModifyDate = DateTime.Now;
             employee.ContractType = request.ContractType;

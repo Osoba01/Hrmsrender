@@ -1,8 +1,8 @@
-﻿using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 
-namespace HRMScore.Entities
+namespace HRMS.Domain.Entities
 {
-    public class Leave: BaseEntity
+    public class Leave : BaseEntity
     {
         public string Name { get; set; }
         public int Days { get; set; }

@@ -8,6 +8,6 @@ namespace HRMS.Application.Services.Employee.Commands.CreateEmployee
 {
     public class EmployeeEventArg:EventArgs
     {
-        public HRMScore.Entities.Employee? Employee { get; set; }
+        public Domain.Entities.Employee? Employee { get; set; }
     }
 }

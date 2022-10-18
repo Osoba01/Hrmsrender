@@ -2,9 +2,9 @@
 using HRMS.Application.Commands.CreateEmployee;
 using HRMS.Application.Services.Employee.Commands.CreateEmployee;
 using HRMS.Auth;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
-using HRMScore.Entities;
-using HRMScore.IRepositories;
 using MediatR;
 using System.Security.Cryptography;
 

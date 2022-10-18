@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using HRMS.Domain.Entities;
 using HRMSapplication.Commands.ApplyForLeave;
 using HRMSapplication.Response;
-using HRMScore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,15 +1,15 @@
-﻿using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 
-namespace HRMScore.Entities
+namespace HRMS.Domain.Entities
 {
-    public class Performance: BaseEntity
+    public class Performance : BaseEntity
     {
         public Performance()
         {
             Month = DateTime.Today;
         }
         public Employee Employee { get; set; }
-        public double   MonthlyRating { get; set; }
+        public double MonthlyRating { get; set; }
         public DateTime Month { get; set; }
     }
 }

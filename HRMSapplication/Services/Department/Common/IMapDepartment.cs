@@ -1,6 +1,6 @@
-﻿using HRMSapplication.Commands.CreateDepartment;
+﻿using HRMS.Domain.Entities;
+using HRMSapplication.Commands.CreateDepartment;
 using HRMSapplication.Response;
-using HRMScore.Entities;
 
 namespace HRMS.Application.Services.CommonDepartment
 {

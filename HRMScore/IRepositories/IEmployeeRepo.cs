@@ -1,14 +1,14 @@
-﻿using HRMScore.Entities;
+﻿using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories.IBase;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories.ICommandRepo.IBase;
 
-namespace HRMScore.IRepositories
+namespace HRMS.Domain.IRepositories
 {
-    public interface IEmployeeRepo:IBaseRepo<Employee>
+    public interface IEmployeeRepo : IBaseRepo<Employee>
     {
         Task<Employee?> EmployeeById(Guid id);
         Task<List<Employee>> EmployeeByManager(Guid ManagerId);
     }
     ///
-   
+
 }

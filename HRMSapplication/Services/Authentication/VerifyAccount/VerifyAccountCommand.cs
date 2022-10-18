@@ -1,5 +1,5 @@
 ﻿using HRMS.Auth;
-using HRMScore.IRepositories;
+using HRMS.Domain.IRepositories;
 using MediatR;
 
 namespace HRMS.Application.Services.Security.VerifyAccount

@@ -2,7 +2,6 @@
 using HRMS.Application.Services.Common;
 using HRMS.Application.Services.ProjectService.Common;
 using HRMS.Domain.IRepositories;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

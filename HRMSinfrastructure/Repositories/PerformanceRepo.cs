@@ -1,7 +1,7 @@
-﻿using HRMScore.Entities;
-using HRMScore.IRepositories;
+﻿using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
+using HRMS.Infrastructure.Repositories.BaseRepo;
 using HRMSinfrastructure.Data;
-using HRMSinfrastructure.Repositories.CommandRepo.BaseRepo;
 
 namespace HRMSinfrastructure.Repositories.CommandRepo
 {

@@ -8,7 +8,6 @@ using HRMS.Application.Services.ProjectService.Common;
 using HRMS.Application.Services.WorkExparienceService.Common;
 using HRMS.Domain.IRepositories;
 using HRMS.Infrastructure.Repositories;
-using HRMScore.IRepositories;
 using HRMS.Infrastructure.Utilities;
 using HRMSinfrastructure.Repositories.CommandRepo;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +26,7 @@ namespace HRMSinfrastructure.Dependency
             services.AddTransient<ISendEmailEvent, CreateEmployeeCommandHandler>();
             services.AddTransient<IResetPasswordEvent,ForgotPasswordCommandHandler>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             services.AddTransient<IMapApplyLeave, MapApplyLeave>();
             services.AddTransient<IMapDepartment, MapDepartment>();

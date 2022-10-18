@@ -12,6 +12,7 @@ using HRMS.API.ExceptionHandling;
 using HRMSinfrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using HRMS.API.Files.manager;
+using HRMSinfrastructure.Dependency;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +62,8 @@ builder.Services.AddDbContext<HRMSDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString(ConString));
 });
-
+//builder.Services.RepoDependencyCollection();
+//builder.Services.MapDependencyCollection();
 builder.Services.DependencyCollection();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

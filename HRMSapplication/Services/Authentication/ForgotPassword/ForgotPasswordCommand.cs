@@ -2,7 +2,7 @@
 using HRMS.Application.Services.Employee.Commands.CreateEmployee;
 using HRMS.Application.Services.Employee.Common;
 using HRMS.Auth;
-using HRMScore.IRepositories;
+using HRMS.Domain.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace HRMS.Application.Services.Employee.Commands.ForgotPassword
 
 
         }
-        protected virtual void OnResetPassword(HRMScore.Entities.Employee employee)
+        protected virtual void OnResetPassword(Domain.Entities.Employee employee)
         {
             ResetPassword?.Invoke(this, new EmployeeEventArg { Employee = employee });
         }

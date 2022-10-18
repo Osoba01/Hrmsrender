@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using HRMS.Application.Services;
 using HRMS.Application.Services.AppliedLeave.CommonResponse;
+using HRMS.Domain.Entities;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
-using HRMScore.Entities;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Commands.ApplyForLeave

@@ -1,4 +1,4 @@
-﻿using HRMScore.IRepositories;
+﻿using HRMS.Domain.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Queries.GetEmployeePhoto

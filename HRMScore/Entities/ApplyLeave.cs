@@ -1,8 +1,8 @@
-﻿using HRMScore.Entities.Base;
+﻿using HRMS.Domain.Entities.Base;
 
-namespace HRMScore.Entities
+namespace HRMS.Domain.Entities
 {
-    public class ApplyLeave: BaseEntity
+    public class ApplyLeave : BaseEntity
     {
         public Leave Leave { get; set; }
         public Employee Employee { get; set; }

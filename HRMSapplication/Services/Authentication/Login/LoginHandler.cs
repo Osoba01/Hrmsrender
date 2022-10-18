@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using HRMS.Application.Services.EmployeeService.Common;
 using HRMS.Auth;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Login;
 using HRMSapplication.Response;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Queries.Login

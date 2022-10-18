@@ -10,7 +10,6 @@ using HRMS.Application.Services.Employee.Common;
 using HRMS.Application.Services.Employee.Query.GetEmployeeByRole;
 using HRMS.Application.Services.Employee.Query.GetSkill;
 using HRMS.Application.Services.Employee.Query.HrInfo;
-using HRMS.Domain.Entities;
 using HRMSapplication.Commands.CreateEmployee;
 using HRMSapplication.Commands.RemoveEmployee;
 using HRMSapplication.Commands.UpdateEmployee;

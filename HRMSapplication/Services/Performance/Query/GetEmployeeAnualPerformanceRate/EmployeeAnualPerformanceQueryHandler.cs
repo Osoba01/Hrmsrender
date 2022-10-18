@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using HRMS.Domain.IRepositories;
 using HRMSapplication.Response;
-using HRMScore.IRepositories;
 using MediatR;
 
 namespace HRMSapplication.Queries.GetEmployeeAnualPerformanceRate

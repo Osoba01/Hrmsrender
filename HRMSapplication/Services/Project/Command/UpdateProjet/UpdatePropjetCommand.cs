@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HRMS.Domain.IRepositories;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

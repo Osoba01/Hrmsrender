@@ -1,7 +1,7 @@
 ﻿using HRMS.Domain.Entities;
 using HRMS.Domain.IRepositories;
+using HRMS.Infrastructure.Repositories.BaseRepo;
 using HRMSinfrastructure.Data;
-using HRMSinfrastructure.Repositories.CommandRepo.BaseRepo;
 
 namespace HRMS.Infrastructure.Repositories
 {

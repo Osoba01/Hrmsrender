@@ -1,6 +1,6 @@
 ﻿using HRMS.Application.Services.Common;
+using HRMS.Domain.IRepositories;
 using HRMScore.HRMSenums;
-using HRMScore.IRepositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

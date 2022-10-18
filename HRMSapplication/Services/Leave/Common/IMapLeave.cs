@@ -1,6 +1,6 @@
-﻿using HRMSapplication.Commands.CreateLeave;
+﻿using HRMS.Domain.Entities;
+using HRMSapplication.Commands.CreateLeave;
 using HRMSapplication.Response;
-using HRMScore.Entities;
 
 namespace HRMS.Application.Services.LeaveService.Common
 {
