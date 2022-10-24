@@ -8,6 +8,7 @@ namespace HRMS.Domain.IRepositories
     {
         Task<Employee?> EmployeeById(Guid id);
         Task<List<Employee>> EmployeeByManager(Guid ManagerId);
+        Task<List<Employee>> EmployeeOnLeaveByManager(Guid ManagerId);
     }
     ///
 

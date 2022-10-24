@@ -51,7 +51,13 @@ namespace HRMS.API.Controllers
         [HttpPost("apply")]
         public async Task<IActionResult> ApplyForLeave([FromBody] ApplyForLeaveCommand applyLeave)
         {
-            return Ok(await _mediator.Send(applyLeave));
+            var resp = await _mediator.Send(applyLeave);
+            if (resp.IsSuccess)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest(resp.Message);
         }
         
         [HttpPatch("Approve")]

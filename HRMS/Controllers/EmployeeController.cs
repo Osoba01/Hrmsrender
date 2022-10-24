@@ -7,6 +7,7 @@ using HRMS.Application.Services.Employee.Commands.UpdateEmployeeDepartment;
 using HRMS.Application.Services.Employee.Commands.UpdateJobDetails;
 using HRMS.Application.Services.Employee.Commands.UpdateManager;
 using HRMS.Application.Services.Employee.Common;
+using HRMS.Application.Services.Employee.Query.EmployeeOnLeaveByManager;
 using HRMS.Application.Services.Employee.Query.GetEmployeeByRole;
 using HRMS.Application.Services.Employee.Query.GetSkill;
 using HRMS.Application.Services.Employee.Query.HrInfo;
@@ -119,6 +120,13 @@ namespace HRMS.API.Controllers
             return Ok(await _mediator.Send(new AllEmployeeQuery()));
         }
         [HttpGet("by-role")]
+
+        [HttpGet("employee-on-leave-by-manager")]
+        [Authorize(Roles ="Manager")]
+        public async Task<IActionResult> GetEmployeeOnLeaveByManager(Guid id)
+        {
+            return Ok(await _mediator.Send(new EmployeeOnLeaveByManagerQuery(id)));
+        }
         public async Task<IActionResult> GetByRole(Role role)
         {
             return Ok(await _mediator.Send(new EmployeeByRoleQuery(role)));

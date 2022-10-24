@@ -28,10 +28,23 @@ namespace HRMS.Infrastructure.Repositories
         public async Task<List<Employee>> EmployeeByManager(Guid ManagerId)
         {
             return await context.Employee
-                .Where(x => x.Manager.Id == ManagerId)
+                .Where(x => x.Manager != null && x.Manager.Id == ManagerId)
                 .Include(x => x.Manager)
                 .Include(x => x.Department)
                 .ToListAsync();
+        }
+
+        public async Task<List<Employee>> EmployeeOnLeaveByManager(Guid ManagerId)
+        {
+           var p= await context.ApplyLeave.
+                Where(x => x.StartDate.Date <= DateTime.Today &&
+               x.StartDate.AddDays(x.Leave.Days) >= DateTime.Today && 
+               x.Employee.Manager !=null &&
+               x.Employee.Manager.Id==ManagerId)
+                .Include(x => x.Employee)
+                .ToListAsync();
+
+            return p.Select(x => x.Employee).ToList();
         }
     }
 }
